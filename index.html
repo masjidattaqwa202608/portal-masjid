@@ -7,9 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .bg-mosque { background: linear-gradient(135deg, #065f46 0%, #047857 50%, #064e3b 100%); }
-        /* Warna teks keemasan yang elegan */
         .text-gold { color: #fbbf24; }
-        /* Animasi Running Text */
         @keyframes marquee {
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
@@ -43,7 +41,6 @@
                     Masuk Portal
                 </button>
 
-                <!-- Laman Catatan Kaki (Keterangan Tambahan di Bawah Tombol Masuk) -->
                 <div class="pt-3 border-t border-gray-100 text-center">
                     <p class="text-[11px] text-gray-400 leading-relaxed">
                         Butuh bantuan akses atau pendaftaran jamaah baru? Silakan hubungi pengurus DKM Masjid At-Taqwa Buluh Manis.
@@ -59,7 +56,6 @@
 
     <!-- ================= HALAMAN MENU UTAMA ================= -->
     <div id="dashboard-page" class="hidden flex-grow flex flex-col">
-        <!-- Header Rapi Tanpa Garis -->
         <header class="bg-mosque text-white px-5 py-4 shadow-md flex justify-between items-center">
             <div class="space-y-0.5">
                 <p class="text-[10px] uppercase tracking-widest text-emerald-200 font-medium">Pusat Informasi & Layanan</p>
@@ -80,7 +76,6 @@
                 <span class="bg-emerald-100 text-emerald-800 text-[11px] px-2.5 py-1 rounded-full font-semibold">Online (Live Sheet)</span>
             </div>
 
-            <!-- RUNNING TEXT (TEKS BERJALAN) -->
             <div class="bg-emerald-800 text-emerald-100 text-xs py-2 px-3 rounded-lg overflow-hidden whitespace-nowrap shadow-inner">
                 <div class="animate-marquee">
                     📢 Selamat datang di Portal Jamaah Masjid AT-TAQWA Desa Buluh Manis. Mari makmurkan masjid kita bersama-sama! &bull; Silakan pilih menu informasi di bawah ini.
@@ -89,13 +84,11 @@
 
             <div>
                 <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2.5">Pilih Menu Informasi:</p>
-                <!-- Grid Menu Berurutan ke Bawah (1 Kolom) -->
                 <div id="menu-grid" class="space-y-3">
                     <p class="text-xs text-gray-400 text-center py-4">Memuat data dari Google Sheets...</p>
                 </div>
             </div>
 
-            <!-- Catatan Kaki Tambahan di Halaman Utama -->
             <div class="p-3 bg-emerald-50/60 border border-emerald-100 rounded-xl text-center">
                 <p class="text-[11px] text-emerald-800 font-medium">
                     ✨ Data diperbarui secara berkala langsung dari sistem pengurus Masjid At-Taqwa.
@@ -192,7 +185,7 @@
 
                 const btn = document.createElement('button');
                 btn.className = "w-full bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:border-emerald-500 hover:shadow-md transition text-left flex items-center space-x-4";
-                btn.onclick = () => bukaModal(item.judul, item.isi);
+                btn.onclick = () => bukaModal(item.judul, item.judul, item.isi);
                 btn.innerHTML = `
                     <span class="text-3xl">${icon}</span>
                     <div>
@@ -210,9 +203,221 @@
             document.getElementById('login-page').classList.remove('hidden');
         }
 
-        function bukaModal(judul, isi) {
+        // Fungsi helper untuk mengambil gabungan seluruh isi teks dari menu Masuk & Keluar agar sinkron total
+        function ambilSemuaDataTransaksi() {
+            let gabunganIsi = "";
+            menuDataCache.forEach(item => {
+                let t = item.judul.toLowerCase();
+                if (t.includes('masuk') || t.includes('keluar') || t.includes('kas') || t.includes('keuangan')) {
+                    gabunganIsi += item.isi + "\n";
+                }
+            });
+            return gabunganIsi;
+        }
+
+        function bukaModal(key, judul, isi) {
             document.getElementById('modal-title').innerText = judul;
-            document.getElementById('modal-content').innerHTML = isi;
+            let titleLower = key.toLowerCase();
+
+            // Ambil data transaksi terpusat yang menggabungkan seluruh sumber di Google Sheets agar selalu sinkron
+            let dataMasterTransaksi = ambilSemuaDataTransaksi();
+            if (!dataMasterTransaksi.trim()) {
+                dataMasterTransaksi = isi; // Fallback jika cache kosong
+            }
+
+            // 1. JIKA MENU KAS / KEUANGAN (Otomatis Hitung Total Masuk, Total Keluar, dan Saldo Akhir)
+            if (titleLower.includes('kas') || titleLower.includes('keuangan')) {
+                let barisData = dataMasterTransaksi.split('\n');
+                let totalMasukGlobal = 0;
+                let totalKeluarGlobal = 0;
+                let rincianKas = {};
+
+                barisData.forEach(baris => {
+                    if (baris.trim() !== "") {
+                        let bagian = baris.split('|');
+                        if (bagian.length >= 4) {
+                            let kategori = bagian[0].trim();
+                            let masuk = parseInt(bagian[2].replace(/[^0-9]/g, '')) || 0;
+                            let keluar = parseInt(bagian[3].replace(/[^0-9]/g, '')) || 0;
+
+                            totalMasukGlobal += masuk;
+                            totalKeluarGlobal += keluar;
+
+                            if (!rincianKas[kategori]) {
+                                rincianKas[kategori] = { masuk: 0, keluar: 0 };
+                            }
+                            rincianKas[kategori].masuk += masuk;
+                            rincianKas[kategori].keluar += keluar;
+                        }
+                    }
+                });
+
+                let totalSaldoAkhir = totalMasukGlobal - totalKeluarGlobal;
+
+                let htmlTabel = `
+                    <div class="space-y-4">
+                        <!-- Kotak Ringkasan Utama (Sinkron Real-Time) -->
+                        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-3">
+                            <h4 class="font-bold text-xs text-emerald-900 uppercase tracking-wider text-center">Rekapitulasi Keuangan Masjid</h4>
+                            <div class="space-y-2 text-xs">
+                                <div class="flex justify-between items-center bg-white p-2 rounded-lg border border-emerald-100">
+                                    <span class="text-gray-600 font-medium">(+) Total Keseluruhan Dana Masuk</span>
+                                    <span class="font-bold text-emerald-600">Rp ${totalMasukGlobal.toLocaleString('id-ID')}</span>
+                                </div>
+                                <div class="flex justify-between items-center bg-white p-2 rounded-lg border border-red-100">
+                                    <span class="text-gray-600 font-medium">(-) Total Keseluruhan Dana Keluar</span>
+                                    <span class="font-bold text-red-600">Rp ${totalKeluarGlobal.toLocaleString('id-ID')}</span>
+                                </div>
+                                <div class="flex justify-between items-center bg-emerald-700 text-white p-2.5 rounded-lg shadow-sm">
+                                    <span class="font-bold">(=) Total Saldo Akhir Kas</span>
+                                    <span class="font-extrabold text-sm text-gold">Rp ${totalSaldoAkhir.toLocaleString('id-ID')}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tabel Rincian Per Jenis Kas -->
+                        <div class="overflow-x-auto">
+                            <p class="text-xs font-semibold text-gray-500 mb-2">Rincian Per Jenis Kas:</p>
+                            <table class="w-full text-left border-collapse text-xs">
+                              <thead>
+                                <tr class="bg-emerald-100 text-emerald-900 border-b">
+                                  <th class="p-2.5">Jenis Kas</th>
+                                  <th class="p-2.5 text-right">Masuk</th>
+                                  <th class="p-2.5 text-right">Keluar</th>
+                                  <th class="p-2.5 text-right">Saldo</th>
+                                </tr>
+                              </thead>
+                              <tbody class="divide-y divide-gray-200">
+                `;
+
+                for (let kat in rincianKas) {
+                    let m = rincianKas[kat].masuk;
+                    let k = rincianKas[kat].keluar;
+                    let s = m - k;
+                    htmlTabel += `
+                        <tr>
+                            <td class="p-2.5 font-medium">${kat}</td>
+                            <td class="p-2.5 text-right text-emerald-600">Rp ${m.toLocaleString('id-ID')}</td>
+                            <td class="p-2.5 text-right text-red-600">Rp ${k.toLocaleString('id-ID')}</td>
+                            <td class="p-2.5 text-right font-bold text-gray-800">Rp ${s.toLocaleString('id-ID')}</td>
+                        </tr>
+                    `;
+                }
+
+                htmlTabel += `
+                              </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('modal-content').innerHTML = htmlTabel;
+
+            } 
+            // 2. JIKA MENU DANA MASUK
+            else if (titleLower.includes('masuk') || titleLower.includes('pemasukan')) {
+                let barisData = dataMasterTransaksi.split('\n');
+                let htmlTabel = `
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                          <thead>
+                            <tr class="bg-emerald-100 text-emerald-900 border-b">
+                              <th class="p-2.5">Kategori / Sumber</th>
+                              <th class="p-2.5">Keterangan</th>
+                              <th class="p-2.5 text-right">Jumlah</th>
+                            </tr>
+                          </thead>
+                          <tbody class="divide-y divide-gray-200">
+                `;
+                let totalMasuk = 0;
+                barisData.forEach(baris => {
+                    if (baris.trim() !== "") {
+                        let bagian = baris.split('|');
+                        if (bagian.length >= 4) {
+                            let kategori = bagian[0].trim();
+                            let ket = bagian[1].trim();
+                            let masuk = parseInt(bagian[2].replace(/[^0-9]/g, '')) || 0;
+                            if (masuk > 0) {
+                                totalMasuk += masuk;
+                                htmlTabel += `
+                                    <tr>
+                                        <td class="p-2.5 font-medium">${kategori}</td>
+                                        <td class="p-2.5 text-gray-500">${ket}</td>
+                                        <td class="p-2.5 text-right font-bold text-emerald-600">Rp ${masuk.toLocaleString('id-ID')}</td>
+                                    </tr>
+                                `;
+                            }
+                        }
+                    }
+                });
+                htmlTabel += `
+                          </tbody>
+                          <tfoot>
+                            <tr class="bg-gray-50 font-bold border-t-2">
+                              <td colspan="2" class="p-2.5">Total Keseluruhan Dana Masuk</td>
+                              <td class="p-2.5 text-right text-emerald-700 text-sm">Rp ${totalMasuk.toLocaleString('id-ID')}</td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                    </div>
+                `;
+                document.getElementById('modal-content').innerHTML = htmlTabel;
+
+            } 
+            // 3. JIKA MENU DANA KELUAR
+            else if (titleLower.includes('keluar') || titleLower.includes('pengeluaran')) {
+                let barisData = dataMasterTransaksi.split('\n');
+                let htmlTabel = `
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                          <thead>
+                            <tr class="bg-red-50 text-red-900 border-b">
+                              <th class="p-2.5">Kategori / Jenis</th>
+                              <th class="p-2.5">Keterangan Pengeluaran</th>
+                              <th class="p-2.5 text-right">Jumlah</th>
+                            </tr>
+                          </thead>
+                          <tbody class="divide-y divide-gray-200">
+                `;
+                let totalKeluar = 0;
+                barisData.forEach(baris => {
+                    if (baris.trim() !== "") {
+                        let bagian = baris.split('|');
+                        if (bagian.length >= 4) {
+                            let kategori = bagian[0].trim();
+                            let ket = bagian[1].trim();
+                            let keluar = parseInt(bagian[3].replace(/[^0-9]/g, '')) || 0;
+                            if (keluar > 0) {
+                                totalKeluar += keluar;
+                                htmlTabel += `
+                                    <tr>
+                                        <td class="p-2.5 font-medium">${kategori}</td>
+                                        <td class="p-2.5 text-gray-500">${ket}</td>
+                                        <td class="p-2.5 text-right font-bold text-red-600">Rp ${keluar.toLocaleString('id-ID')}</td>
+                                    </tr>
+                                `;
+                            }
+                        }
+                    }
+                });
+                htmlTabel += `
+                          </tbody>
+                          <tfoot>
+                            <tr class="bg-gray-50 font-bold border-t-2">
+                              <td colspan="2" class="p-2.5">Total Keseluruhan Dana Keluar</td>
+                              <td class="p-2.5 text-right text-red-700 text-sm">Rp ${totalKeluar.toLocaleString('id-ID')}</td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                    </div>
+                `;
+                document.getElementById('modal-content').innerHTML = htmlTabel;
+
+            } 
+            // 4. MENU LAINNYA
+            else {
+                document.getElementById('modal-content').innerHTML = isi;
+            }
+
             document.getElementById('info-modal').classList.remove('hidden');
         }
 
