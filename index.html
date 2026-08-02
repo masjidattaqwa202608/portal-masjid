@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Jamaah - Masjid AT-TAQWA</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .bg-mosque { background: linear-gradient(135deg, #065f46 0%, #047857 50%, #064e3b 100%); }
         .text-gold { color: #fbbf24; }
+        .bg-gold { background-color: #fbbf24; }
         @keyframes marquee {
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
@@ -22,7 +24,7 @@
 
     <!-- ================= HALAMAN LOGIN ================= -->
     <div id="login-page" class="flex-grow flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden border border-emerald-100">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden border border-emerald-100 my-auto">
             <div class="bg-mosque px-6 py-8 text-white text-center space-y-1.5">
                 <p class="text-[11px] uppercase tracking-widest text-emerald-200 font-medium">Pusat Informasi & Layanan Jamaah</p>
                 <h1 class="text-2xl font-extrabold tracking-wider uppercase text-gold">MASJID AT-TAQWA</h1>
@@ -33,17 +35,52 @@
                 <div class="bg-emerald-50 border-l-4 border-emerald-600 p-3 text-xs text-emerald-800 rounded">
                     Silakan masukkan <b>Username</b> Anda. Data login akan tercatat di sistem masjid.
                 </div>
+                
+                <!-- Pesan Peringatan Input Kosong (Pengganti Alert) -->
+                <div id="login-error-msg" class="hidden bg-rose-50 border border-rose-200 text-rose-700 text-xs p-2.5 rounded-lg text-center font-medium">
+                    ⚠️ Silakan masukkan username jamaah terlebih dahulu!
+                </div>
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Username Jamaah</label>
                     <input type="text" id="username-input" placeholder="Contoh: JAMAAH01" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
                 </div>
+                
                 <button onclick="prosesLogin()" id="btn-login" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition duration-200 shadow-md">
                     Masuk Portal
                 </button>
 
+                <!-- ================= SLIDER GAMBAR KEGIATAN DINAMIS ================= -->
+                <div class="pt-2 space-y-2">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider text-center flex items-center justify-center gap-1.5">
+                        <span>📷</span> Dokumentasi Kegiatan Masjid
+                    </p>
+                    <div class="relative rounded-xl overflow-hidden shadow-sm group border border-emerald-100 bg-gray-900 min-h-[176px]">
+                        
+                        <!-- Slide Items Container (Memuat data otomatis dari Google Sheets tab Slider) -->
+                        <div id="login-slider" class="flex transition-transform duration-500 ease-in-out">
+                            <div class="min-w-full flex items-center justify-center h-44 bg-emerald-950 text-emerald-200 text-xs">
+                                Memuat foto kegiatan dari sistem...
+                            </div>
+                        </div>
+
+                        <!-- Tombol Navigasi Slider Prev / Next -->
+                        <button onclick="slideSebelumnya()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white rounded-full p-1.5 focus:outline-none transition opacity-70 group-hover:opacity-100 text-xs z-10" aria-label="Slide Sebelumnya">
+                            &#10094;
+                        </button>
+                        <button onclick="slideBerikutnya()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white rounded-full p-1.5 focus:outline-none transition opacity-70 group-hover:opacity-100 text-xs z-10" aria-label="Slide Berikutnya">
+                            &#10095;
+                        </button>
+
+                        <!-- Indikator Dots Dinamis -->
+                        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1.5 z-10" id="slider-dots">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="pt-3 border-t border-gray-100 text-center">
-                    <p class="text-[13px] text-gray-400 leading-relaxed">
-                        Kepada para Jamaah yang ingin menyalurkan infak, sedekah, zakat, atau titipan donasi melalui DKM Masjid At-Taqwa, dapat langsung menghubungi pengurus masjid atau melihat rincian transaksinya melalui portal ini yang diperbarui secara berkala dan transparan.
+                    <p class="text-[13px] text-gray-500 leading-relaxed">
+                        Kepada para Jamaah yang ingin menyalurkan infak, sedekah, zakat, atau titipan donasi melalui DKM Masjid At-Taqwa, dapat langsung menghubungi pengurus masjid atau melihat rincian transaksinya secara transparan di portal ini.
                     </p>
                 </div>
             </div>
@@ -54,7 +91,7 @@
         </div>
     </div>
 
-    <!-- ================= HALAMAN MENU UTAMA ================= -->
+    <!-- ================= HALAMAN MENU UTAMA (DASHBOARD) ================= -->
     <div id="dashboard-page" class="hidden flex-grow flex flex-col">
         <header class="bg-mosque text-white px-5 py-4 shadow-md flex justify-between items-center">
             <div class="space-y-0.5">
@@ -97,7 +134,7 @@
         </main>
     </div>
 
-    <!-- ================= MODAL INFORMASI ================= -->
+    <!-- ================= MODAL INFORMASI & TABEL KEUANGAN ================= -->
     <div id="info-modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform transition-all">
             <div class="bg-emerald-700 text-white p-4 flex justify-between items-center">
@@ -121,20 +158,205 @@
         Masjid AT-TAQWA &bull; Desa Buluh Manis
     </footer>
 
-    <!-- ================= JAVASCRIPT & GOOGLE SHEETS CONNECTOR ================= -->
+    <!-- ================= JAVASCRIPT LOGIC & GOOGLE SHEETS INTEGRATION ================= -->
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2G3-AvgoUjbzsF2Rn9pLIWCaTYASPeDsrzS5EVHcp1Bnfi5bUCmz9sHPhNSFzOg6Hig/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwiDad4E-sSYWj3YJPcGVYyIdvfDcGBeirLPerULLi0jfhPPhMbmUaZsQgcEXKwDh-mrw/exec";
 
         let menuDataCache = [];
+        let sliderDataCache = [];
+        let currentSlide = 0;
+        let sliderTimer = null;
+
+        // Slide cadangan berkualitas tinggi jika belum ada data slider dari Google Sheets
+        const defaultSlides = [
+            {
+                judul: "Kajian & Doa Bersama",
+                keterangan: "Kegiatan pengajian rutin jamaah Masjid At-Taqwa",
+                foto: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                judul: "Santunan & Infak Jamaah",
+                keterangan: "Penyaluran bantuan dan santunan anak yatim",
+                foto: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                judul: "Gotong Royong Makmurkan Masjid",
+                keterangan: "Kebersihan dan perawatan sarana ibadah bersama",
+                foto: "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                judul: "Sholat Berjamaah & Silaturahmi",
+                keterangan: "Mempererat tali silaturahmi antar warga dan jamaah",
+                foto: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                judul: "Peringatan Hari Besar Islam",
+                keterangan: "Kegiatan syiar Islam dan peringatan hari besar keagamaan",
+                foto: "https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        // Mengonversi secara otomatis link Google Drive atau URL foto biasa ke Direct Image Link
+        function parseImageUrl(url) {
+            if (!url || typeof url !== 'string' || !url.trim()) {
+                return {
+                    url: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&w=800&q=80",
+                    driveId: null
+                };
+            }
+            
+            let cleanUrl = url.trim();
+
+            // Ubah protokol HTTP menjadi HTTPS agar tidak diblokir browser
+            if (cleanUrl.startsWith("http://")) {
+                cleanUrl = cleanUrl.replace("http://", "https://");
+            }
+
+            // Ekstrak ID Google Drive
+            let driveMatch = cleanUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || cleanUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (driveMatch && driveMatch[1]) {
+                return {
+                    url: `https://drive.google.com/thumbnail?id=${driveMatch[1]}&sz=w1000`,
+                    driveId: driveMatch[1]
+                };
+            }
+
+            return { url: cleanUrl, driveId: null };
+        }
+
+        // Penanganan error gambar berantai (multi-stage fallback)
+        function handleImageError(img) {
+            const driveId = img.getAttribute('data-drive-id');
+            let step = parseInt(img.getAttribute('data-step') || "0");
+
+            if (driveId) {
+                const altUrls = [
+                    `https://lh3.googleusercontent.com/d/${driveId}`,
+                    `https://drive.google.com/uc?export=view&id=${driveId}`,
+                    `https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800&q=80`
+                ];
+                if (step < altUrls.length) {
+                    img.setAttribute('data-step', step + 1);
+                    img.src = altUrls[step];
+                    return;
+                }
+            }
+            
+            // Fallback default jika seluruh opsi link Google Drive gagal dimuat
+            img.onerror = null;
+            img.src = "https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800&q=80";
+        }
+
+        async function muatSliderOtomatis() {
+            try {
+                const response = await fetch(SCRIPT_URL + "?action=getSlider");
+                const data = await response.json();
+
+                if (Array.isArray(data) && data.length > 0) {
+                    sliderDataCache = data;
+                } else {
+                    sliderDataCache = defaultSlides;
+                }
+            } catch (err) {
+                console.log("Menggunakan slide default:", err);
+                sliderDataCache = defaultSlides;
+            }
+            renderSliderUI(sliderDataCache);
+        }
+
+        function renderSliderUI(slides) {
+            const sliderContainer = document.getElementById('login-slider');
+            const dotsContainer = document.getElementById('slider-dots');
+
+            if (!sliderContainer || !dotsContainer) return;
+
+            sliderContainer.innerHTML = "";
+            dotsContainer.innerHTML = "";
+
+            slides.forEach((item, index) => {
+                let parsed = parseImageUrl(item.foto);
+                let imgUrl = parsed.url;
+                let driveId = parsed.driveId || '';
+
+                // Elemen Slide Gambar
+                const slideDiv = document.createElement('div');
+                slideDiv.className = "min-w-full relative";
+                slideDiv.innerHTML = `
+                    <img src="${imgUrl}" alt="${item.judul || 'Kegiatan'}" 
+                         data-drive-id="${driveId}"
+                         data-step="0"
+                         onerror="handleImageError(this)"
+                         class="w-full h-44 object-cover opacity-90">
+                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3 text-white">
+                        <p class="font-bold text-xs text-gold">${item.judul || 'Kegiatan Masjid'}</p>
+                        <p class="text-[10px] text-gray-200 line-clamp-1">${item.keterangan || ''}</p>
+                    </div>
+                `;
+                sliderContainer.appendChild(slideDiv);
+
+                // Indikator Dots
+                const dotSpan = document.createElement('span');
+                dotSpan.className = `dot w-2 h-2 rounded-full cursor-pointer transition-all ${index === 0 ? 'bg-gold w-4' : 'bg-white/50'}`;
+                dotSpan.onclick = () => setSlideIndex(index);
+                dotsContainer.appendChild(dotSpan);
+            });
+
+            currentSlide = 0;
+            updateSlider();
+            mulaiAutoSlide();
+        }
+
+        function updateSlider() {
+            const slider = document.getElementById('login-slider');
+            const dots = document.querySelectorAll('#slider-dots .dot');
+            if (!slider || sliderDataCache.length === 0) return;
+            
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            dots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.className = 'dot w-4 h-2 rounded-full bg-gold transition-all cursor-pointer';
+                } else {
+                    dot.className = 'dot w-2 h-2 rounded-full bg-white/50 transition-all cursor-pointer';
+                }
+            });
+        }
+
+        function slideBerikutnya() {
+            if (sliderDataCache.length === 0) return;
+            currentSlide = (currentSlide + 1) % sliderDataCache.length;
+            updateSlider();
+        }
+
+        function slideSebelumnya() {
+            if (sliderDataCache.length === 0) return;
+            currentSlide = (currentSlide - 1 + sliderDataCache.length) % sliderDataCache.length;
+            updateSlider();
+        }
+
+        function setSlideIndex(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        function mulaiAutoSlide() {
+            if (sliderTimer) clearInterval(sliderTimer);
+            sliderTimer = setInterval(() => {
+                slideBerikutnya();
+            }, 3500);
+        }
 
         async function prosesLogin() {
-            const username = document.getElementById('username-input').value.trim();
+            const usernameInput = document.getElementById('username-input');
+            const errorMsg = document.getElementById('login-error-msg');
+            const username = usernameInput.value.trim();
             const btnLogin = document.getElementById('btn-login');
 
             if (username === "") {
-                alert("Silakan masukkan username jamaah terlebih dahulu!");
+                errorMsg.classList.remove('hidden');
                 return;
             }
+            errorMsg.classList.add('hidden');
 
             btnLogin.innerText = "Menghubungkan...";
             btnLogin.disabled = true;
@@ -199,11 +421,11 @@
 
         function logout() {
             document.getElementById('username-input').value = "";
+            document.getElementById('login-error-msg').classList.add('hidden');
             document.getElementById('dashboard-page').classList.add('hidden');
             document.getElementById('login-page').classList.remove('hidden');
         }
 
-        // Fungsi helper untuk mengambil gabungan seluruh isi teks dari menu Masuk & Keluar agar sinkron total
         function ambilSemuaDataTransaksi() {
             let gabunganIsi = "";
             menuDataCache.forEach(item => {
@@ -219,13 +441,12 @@
             document.getElementById('modal-title').innerText = judul;
             let titleLower = key.toLowerCase();
 
-            // Ambil data transaksi terpusat yang menggabungkan seluruh sumber di Google Sheets agar selalu sinkron
             let dataMasterTransaksi = ambilSemuaDataTransaksi();
             if (!dataMasterTransaksi.trim()) {
-                dataMasterTransaksi = isi; // Fallback jika cache kosong
+                dataMasterTransaksi = isi;
             }
 
-            // 1. JIKA MENU KAS / KEUANGAN (Otomatis Hitung Total Masuk, Total Keluar, dan Saldo Akhir)
+            // 1. REKAPITULASI KAS & KEUANGAN
             if (titleLower.includes('kas') || titleLower.includes('keuangan')) {
                 let barisData = dataMasterTransaksi.split('\n');
                 let totalMasukGlobal = 0;
@@ -256,7 +477,6 @@
 
                 let htmlTabel = `
                     <div class="space-y-4">
-                        <!-- Kotak Ringkasan Utama (Sinkron Real-Time) -->
                         <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-3">
                             <h4 class="font-bold text-xs text-emerald-900 uppercase tracking-wider text-center">Rekapitulasi Keuangan Masjid</h4>
                             <div class="space-y-2 text-xs">
@@ -275,7 +495,6 @@
                             </div>
                         </div>
 
-                        <!-- Tabel Rincian Per Jenis Kas -->
                         <div class="overflow-x-auto">
                             <p class="text-xs font-semibold text-gray-500 mb-2">Rincian Per Jenis Kas:</p>
                             <table class="w-full text-left border-collapse text-xs">
@@ -313,7 +532,7 @@
                 document.getElementById('modal-content').innerHTML = htmlTabel;
 
             } 
-            // 2. JIKA MENU DANA MASUK
+            // 2. KATEGORI DANA MASUK
             else if (titleLower.includes('masuk') || titleLower.includes('pemasukan')) {
                 let barisData = dataMasterTransaksi.split('\n');
                 let htmlTabel = `
@@ -363,7 +582,7 @@
                 document.getElementById('modal-content').innerHTML = htmlTabel;
 
             } 
-            // 3. JIKA MENU DANA KELUAR
+            // 3. KATEGORI DANA KELUAR
             else if (titleLower.includes('keluar') || titleLower.includes('pengeluaran')) {
                 let barisData = dataMasterTransaksi.split('\n');
                 let htmlTabel = `
@@ -413,7 +632,7 @@
                 document.getElementById('modal-content').innerHTML = htmlTabel;
 
             } 
-            // 4. MENU LAINNYA
+            // 4. INFORMASI TEKS BIASA
             else {
                 document.getElementById('modal-content').innerHTML = isi;
             }
@@ -424,6 +643,10 @@
         function tutupModal() {
             document.getElementById('info-modal').classList.add('hidden');
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            muatSliderOtomatis();
+        });
     </script>
 </body>
 </html>
