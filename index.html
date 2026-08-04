@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Jamaah - Masjid AT-TAQWA</title>
+    
+    <!-- Meta Anti-Cache untuk memastikan update langsung terbaca -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -34,30 +40,34 @@
     <main class="flex-grow p-4 max-w-md w-full mx-auto space-y-4">
 
         <!-- 1. JADWAL SHOLAT HARI INI + TOMBOL PENGUMUMAN -->
-        <div class="bg-white p-3.5 rounded-xl shadow-sm border border-emerald-100 flex items-center justify-between gap-3">
-            <div class="flex-grow space-y-1">
-                <div class="flex items-center justify-between text-[11px] text-emerald-800 font-bold border-b border-emerald-100 pb-1">
-                    <span>JADWAL SHOLAT HARI INI</span>
-                    <!-- Tambahkan span jam-realtime di sini -->
-                    <span class="text-[10px] text-gray-500 font-normal">
-                        <span id="jam-realtime" class="font-mono font-bold text-emerald-700 mr-1">00:00:00</span> | <span id="label-tanggal-sholat">Memuat...</span>
-                    </span>
-                </div>
-                <div id="jadwal-sholat-container" class="grid grid-cols-5 gap-1 text-center pt-0.5">
-                    <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Subuh</span><span id="sholat-subuh" class="font-bold text-xs text-emerald-900">--:--</span></div>
-                    <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Dzuhur</span><span id="sholat-dzuhur" class="font-bold text-xs text-emerald-900">--:--</span></div>
-                    <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Ashar</span><span id="sholat-ashar" class="font-bold text-xs text-emerald-900">--:--</span></div>
-                    <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Maghrib</span><span id="sholat-maghrib" class="font-bold text-xs text-emerald-900">--:--</span></div>
-                    <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Isya</span><span id="sholat-isya" class="font-bold text-xs text-emerald-900">--:--</span></div>
-                </div>
-            </div>
-            
-            <button onclick="bukaModalPengumuman()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-3 py-3 rounded-xl shadow flex flex-col items-center justify-center gap-1 transition transform active:scale-95 shrink-0">
-                <span class="text-base">📢</span>
-                <span class="text-[10px] leading-tight">Pengumuman</span>
-                <span id="badge-pengumuman" class="hidden w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
-            </button>
+<div class="bg-white p-3.5 rounded-xl shadow-sm border border-emerald-100 flex items-center justify-between gap-3">
+    <div class="flex-grow space-y-1.5">
+        <!-- Baris Atas: Judul di Kiri, Jam di Kanan Sejajar -->
+        <div class="flex items-center justify-between text-[10px] text-emerald-800 font-bold border-b border-emerald-100 pb-1">
+            <span>JADWAL SHOLAT HARI INI</span>
+            <span id="jam-realtime" class="font-mono font-bold text-xs text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">00:00:00</span>
         </div>
+
+        <!-- Baris Bawah: Tanggal -->
+        <div id="label-tanggal-sholat" class="text-[11px] text-gray-500 font-normal">Memuat...</div>
+        
+        <!-- Kotak Grid Sholat -->
+        <div id="jadwal-sholat-container" class="grid grid-cols-5 gap-1 text-center pt-0.5">
+            <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Subuh</span><span id="sholat-subuh" class="font-bold text-xs text-emerald-900">--:--</span></div>
+            <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Dzuhur</span><span id="sholat-dzuhur" class="font-bold text-xs text-emerald-900">--:--</span></div>
+            <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Ashar</span><span id="sholat-ashar" class="font-bold text-xs text-emerald-900">--:--</span></div>
+            <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Maghrib</span><span id="sholat-maghrib" class="font-bold text-xs text-emerald-900">--:--</span></div>
+            <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Isya</span><span id="sholat-isya" class="font-bold text-xs text-emerald-900">--:--</span></div>
+        </div>
+    </div>
+    
+    <button onclick="bukaModalPengumuman()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-2 py-6 rounded-xl shadow flex flex-col items-center justify-center gap-1 transition transform active:scale-95 shrink-0">
+        <span class="text-base">📢</span>
+        <span class="text-[10px] leading-tight">Pengumuman</span>
+        <span id="badge-pengumuman" class="hidden w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
+    </button>
+</div>    
+    
 <!-- 2. RUNNING TEXT / MARQUEE UMUM -->
         <div class="bg-emerald-900 text-emerald-100 text-xs py-2.5 px-4 rounded-xl overflow-hidden whitespace-nowrap shadow-inner border border-emerald-800 flex items-center gap-2">
             <div class="overflow-hidden w-full relative">
