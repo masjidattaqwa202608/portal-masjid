@@ -23,7 +23,7 @@
         }
         .animate-marquee {
             display: inline-block;
-            animation: marquee 20s linear infinite;
+            animation: marquee 30s linear infinite;
         }
     </style>
 </head>
@@ -42,14 +42,13 @@
         <!-- 1. JADWAL SHOLAT HARI INI + TOMBOL PENGUMUMAN -->
 <div class="bg-white p-3.5 rounded-xl shadow-sm border border-emerald-100 flex items-center justify-between gap-3">
     <div class="flex-grow space-y-1.5">
-        <!-- Baris Atas: Judul di Kiri, Jam di Kanan Sejajar -->
-        <div class="flex items-center justify-between text-[10px] text-emerald-800 font-bold border-b border-emerald-100 pb-1">
-            <span>JADWAL SHOLAT HARI INI</span>
+        <!-- Baris Atas: Judul (Warna Keemasan & Bold) di Kiri, Jam di Kanan Sejajar -->
+        <div class="flex items-center justify-between border-b border-emerald-100 pb-1">
+             <!-- Baris Bawah: Tanggal -->
+        <div id="label-tanggal-sholat" class="text-[13px] text-emerald-600 font-bold">Memuat...</div>
             <span id="jam-realtime" class="font-mono font-bold text-xs text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">00:00:00</span>
-        </div>
-
-        <!-- Baris Bawah: Tanggal -->
-        <div id="label-tanggal-sholat" class="text-[11px] text-gray-500 font-normal">Memuat...</div>
+        </div>             
+	<span class="text-[11px] font-bold text-emerald-500" >JADWAL SHOLAT HARI INI</span>
         
         <!-- Kotak Grid Sholat -->
         <div id="jadwal-sholat-container" class="grid grid-cols-5 gap-1 text-center pt-0.5">
@@ -210,11 +209,11 @@
                 </a>
             </div>
 
-            <div class="text-[11px] text-amber-900 bg-amber-100/60 p-2.5 rounded-lg border border-amber-200 space-y-1">
+            <div class="text-[12px] text-amber-900 bg-amber-100/60 p-2.5 rounded-lg border border-amber-200 space-y-1">
                 <p class="font-semibold text-amber-950">💡 Catatan Konfirmasi Donasi:</p>
                 <p class="text-gray-700 leading-snug text-justify">
-                    Setelah melakukan transfer, mohon klik tombol hijau di atas untuk mengirimkan bukti transfer kepada Ketua DKM agar tercatat transparan dalam rekapitulasi kas masjid.<br>
-                    Jazakumullah khairan katsiran kepada para jamaah dan donatur yang telah menyalurkan infak & sedekahnya melalui pengurus DKM Masjid AT-TAQWA. Semoga diberkahi serta dilipatgandakan oleh Allah SWT dan menjadi amal jariyah yang mengalir pahalanya. Aamiin.
+                    &bull;  Setelah melakukan transfer, mohon klik tombol hijau di atas untuk mengirimkan bukti transfer kepada Ketua DKM agar tercatat transparan dalam rekapitulasi kas masjid.<br>
+                    &bull; Jazakumullah khairan katsiran kepada para jamaah dan donatur yang telah menyalurkan infak & sedekahnya melalui pengurus DKM Masjid AT-TAQWA. Semoga diberkahi serta dilipatgandakan oleh Allah SWT dan menjadi amal jariyah yang mengalir pahalanya. Aamiin.
                 </p>
             </div>
         </div>
