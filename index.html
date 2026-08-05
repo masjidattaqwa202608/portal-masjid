@@ -23,7 +23,7 @@
         }
         .animate-marquee {
             display: inline-block;
-            animation: marquee 20s linear infinite;
+            animation: marquee 15s linear infinite;
         }
     </style>
 </head>
@@ -36,19 +36,19 @@
         <p class="text-xs text-emerald-100 tracking-wide font-normal pt-0.5">Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
     </header>
 
-    <!-- ================= KONTEN UTAMA ================= -->
-    <main class="flex-grow p-4 max-w-md w-full mx-auto space-y-4">
-
-        <!-- 1. JADWAL SHOLAT HARI INI + TOMBOL PENGUMUMAN -->
-<div class="bg-white p-3.5 rounded-xl shadow-sm border border-emerald-100 flex items-center justify-between gap-3">
-    <div class="flex-grow space-y-1.5">
-        <!-- Baris Atas: Judul (Warna Keemasan & Bold) di Kiri, Jam di Kanan Sejajar -->
-        <div class="flex items-center justify-between border-b border-emerald-100 pb-1">
-             <!-- Baris Bawah: Tanggal -->
-        <div id="label-tanggal-sholat" class="text-[13px] text-emerald-600 font-bold">Memuat...</div>
-            <span id="jam-realtime" class="font-mono font-bold text-xs text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">00:00:00</span>
-        </div>             
-	<span class="text-[11px] font-bold text-emerald-500" >JADWAL SHOLAT HARI INI</span>
+    <!-- KOTAK UTAMA -->
+<div class="bg-white p-3.5 rounded-xl shadow-sm border border-emerald-100 flex items-center justify-between gap-3 w-full mx-auto space-y-2">
+    
+    <!-- BAGIAN KIRI: Tanggal, Jam, Judul, dan Grid Jadwal Sholat -->
+    <div class="flex-grow min-w-0 space-y-1.5">
+        <!-- Baris Atas: Tanggal di Kiri, Jam di Kanan Sejajar -->
+        <div class="flex items-center justify-between border-b border-emerald-100 pb-1 gap-2">
+            <div id="label-tanggal-sholat" class="text-[11px] font-bold text-emerald-800 truncate">Memuat...</div>
+            <span id="jam-realtime" class="font-mono font-bold text-xs text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 shrink-0">00:00:00</span>
+        </div>
+        
+        <!-- Judul Bagian -->
+        <div class="text-[11px] font-bold text-emerald-600">JADWAL SHOLAT HARI INI</div>
         
         <!-- Kotak Grid Sholat -->
         <div id="jadwal-sholat-container" class="grid grid-cols-5 gap-1 text-center pt-0.5">
@@ -60,18 +60,29 @@
         </div>
     </div>
     
-    <button onclick="bukaModalPengumuman()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-2 py-6 rounded-xl shadow flex flex-col items-center justify-center gap-1 transition transform active:scale-95 shrink-0">
-        <span class="text-base">📢</span>
-        <span class="text-[10px] leading-tight">Pengumuman</span>
-        <span id="badge-pengumuman" class="hidden w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
-    </button>
-</div>    
-    
+    <!-- BAGIAN KANAN: Tombol Pengumuman (Atas) & Tombol Rute Masjid (Bawah) -->
+    <div class="flex flex-col gap-2 shrink-0">
+        <!-- Tombol Pengumuman -->
+        <button onclick="bukaModalPengumuman()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold w-20 py-2 rounded-xl shadow flex flex-col items-center justify-center gap-2 transition transform active:scale-95">
+            
+<span id="badge-pengumuman" class="hidden w-1.5 h-1.5 bg-red-700 rounded-full animate-ping"></span>
+
+            <span class="text-[10px] leading-tight">Pengumuman</span>
+            
+        </button>
+
+        <!-- Tombol Rute ke Masjid -->
+        <button onclick="bukaRuteKeMasjid()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold w-20 py-1 rounded-xl shadow flex flex-col items-center justify-center gap-1 transition transform active:scale-95">
+            <span class="text-base">🗺️</span>
+            <span class="text-[10px] leading-tight">Rute Masjid</span>
+        </button>
+    </div>
+</div>   
 <!-- 2. RUNNING TEXT / MARQUEE UMUM -->
-        <div class="bg-emerald-900 text-emerald-100 text-xs py-2.5 px-4 rounded-xl overflow-hidden whitespace-nowrap shadow-inner border border-emerald-800 flex items-center gap-2">
+        <div class="bg-emerald-900 text-emerald-100 text-xs py-2 px-4 rounded-xl overflow-hidden whitespace-nowrap shadow-inner border border-emerald-800 flex items-center gap-2">
             <div class="overflow-hidden w-full relative">
                 <div class="animate-marquee font-medium inline-block" id="running-text-content">
-                    Selamat datang di Portal Jamaah Masjid AT-TAQWA Desa Buluh Manis |  Mari makmurkan masjid dengan shalat berjamaah tepat waktu | Salurkan infaq dan sedekah terbaik Anda untuk pembangunan dan operasional masjid melalui rekening resmi kami 
+                    Selamat datang di Portal Jamaah Masjid AT-TAQWA Desa Buluh Manis  
                 </div>
             </div>
         </div>
@@ -276,14 +287,14 @@
 
         const defaultSlides = [
             {
-                judul: "Kajian & Doa Bersama",
-                keterangan: "Kegiatan pengajian rutin jamaah Masjid At-Taqwa",
-                foto: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800&q=80"
+                judul: "-",
+                keterangan: "-",
+                foto: "-"
             },
             {
-                judul: "Santunan & Infak Jamaah",
-                keterangan: "Penyaluran bantuan dan santunan anak yatim",
-                foto: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&w=800&q=80"
+                judul: "-",
+                keterangan: "-",
+                foto: "-"
             }
         ];
 
@@ -665,6 +676,59 @@ function mulaiJamRealtime() {
                 }
             });
         }
+function bukaRuteKeMasjid() {
+    // 1. Tentukan Titik Koordinat Masjid AT-TAQWA (Ganti dengan koordinat masjid yang akurat)
+    const masjidLat = 1.268489;  // Contoh Latitude Masjid
+    const masjidLng = 101.092149; // Contoh Longitude Masjid
+    const namaMasjid = "Masjid AT-TAQWA Desa Buluh Manis";
+
+    // 2. Cek apakah browser mendukung Geolocation
+    if (!navigator.geolocation) {
+        alert("Maaf, browser perangkat Anda tidak mendukung fitur deteksi lokasi.");
+        // Jika tidak didukung, arahkan langsung ke titik masjid saja tanpa GPS asal
+        window.open(`https://www.google.com/maps/search/?api=1&query=${masjidLat},${masjidLng}`, '_blank');
+        return;
+    }
+
+    // Berikan indikator loading kecil jika diperlukan
+    const btn = event.currentTarget;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = `<span class="text-xs">Mencari GPS...</span>`;
+    btn.disabled = true;
+
+    // 3. Ambil posisi koordinat HP Jamaah saat ini
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
+
+            // Kembalikan tombol seperti semula
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+
+            // 4. Buka Google Maps Directions (Dari Koordinat HP -> Koordinat Masjid)
+            const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${masjidLat},${masjidLng}&destination_place_id=Masjid+AT-TAQWA`;
+            
+            window.open(gmapsUrl, '_blank');
+        },
+        (error) => {
+            // Kembalikan tombol jika gagal/izin ditolak
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+
+            let pesanError = "Gagal mendeteksi lokasi Anda.";
+            if (error.code === error.PERMISSION_DENIED) {
+                pesanError = "Izin lokasi ditolak. Mohon aktifkan izin GPS / Lokasi pada pengaturan browser HP Anda.";
+            }
+            alert(pesanError);
+            
+            // Fallback: Tetap buka peta lokasi masjid tanpa titik awal GPS
+            window.open(`https://www.google.com/maps/search/?api=1&query=${masjidLat},${masjidLng}`, '_blank');
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+}
+
     </script>
 </body>
 </html>
