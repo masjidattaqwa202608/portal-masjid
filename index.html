@@ -23,7 +23,7 @@
         }
         .animate-marquee {
             display: inline-block;
-            animation: marquee 10s linear infinite;
+            animation: marquee 7s linear infinite;
         }
     </style>
 </head>
@@ -36,6 +36,7 @@
         <p class="text-xs text-emerald-100 tracking-wide font-normal pt-0.5">Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
     </header>
 
+<main class="p-3.5 space-y-3.5 max-w-md w-full mx-auto">
     <!-- KOTAK UTAMA -->
 <div class="bg-white p-3.5 rounded-xl shadow-sm border border-emerald-100 flex items-center justify-between gap-3 w-full mx-auto space-y-2">
     
@@ -49,36 +50,32 @@
         
         <!-- Judul Bagian -->
         <div class="text-[11px] font-bold text-emerald-600">JADWAL SHOLAT HARI INI</div>
-        
-        <!-- Kotak Grid Sholat -->
+       
+        <!-- Kotak Grid Sholat dengan ID untuk Highlight -->
         <div id="jadwal-sholat-container" class="grid grid-cols-5 gap-1 text-center pt-0.5">
-            <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Subuh</span><span id="sholat-subuh" class="font-bold text-xs text-emerald-900">--:--</span></div>
-            <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Dzuhur</span><span id="sholat-dzuhur" class="font-bold text-xs text-emerald-900">--:--</span></div>
-            <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Ashar</span><span id="sholat-ashar" class="font-bold text-xs text-emerald-900">--:--</span></div>
-            <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Maghrib</span><span id="sholat-maghrib" class="font-bold text-xs text-emerald-900">--:--</span></div>
-            <div class="bg-emerald-50 p-1 rounded"><span class="block text-[9px] text-gray-500">Isya</span><span id="sholat-isya" class="font-bold text-xs text-emerald-900">--:--</span></div>
+            <div id="box-subuh" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Subuh</span><span id="sholat-subuh" class="font-bold text-xs text-emerald-900">--:--</span></div>
+            <div id="box-dzuhur" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Dzuhur</span><span id="sholat-dzuhur" class="font-bold text-xs text-emerald-900">--:--</span></div>
+            <div id="box-ashar" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Ashar</span><span id="sholat-ashar" class="font-bold text-xs text-emerald-900">--:--</span></div>
+            <div id="box-maghrib" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Maghrib</span><span id="sholat-maghrib" class="font-bold text-xs text-emerald-900">--:--</span></div>
+            <div id="box-isya" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Isya</span><span id="sholat-isya" class="font-bold text-xs text-emerald-900">--:--</span></div>
         </div>
     </div>
     
-    <!-- BAGIAN KANAN: Tombol Pengumuman (Atas) & Tombol Rute Masjid (Bawah) -->
+    <!-- BAGIAN KANAN: Tombol Pengumuman & Rute Masjid -->
     <div class="flex flex-col gap-2 shrink-0">
-        <!-- Tombol Pengumuman -->
         <button onclick="bukaModalPengumuman()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold w-20 py-2 rounded-xl shadow flex flex-col items-center justify-center gap-2 transition transform active:scale-95">
-            
-<span id="badge-pengumuman" class="hidden w-1.5 h-1.5 bg-red-700 rounded-full animate-ping"></span>
-
-            <span class="text-[10px] leading-tight">Pengumuman & Informasi </span>
-            
+            <span id="badge-pengumuman" class="hidden w-1.5 h-1.5 bg-red-700 rounded-full animate-ping"></span>
+            <span class="text-[10px] leading-tight">Pengumuman & Informasi</span>
         </button>
 
-        <!-- Tombol Rute ke Masjid -->
         <button onclick="bukaRuteKeMasjid()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold w-20 py-1 rounded-xl shadow flex flex-col items-center justify-center gap-1 transition transform active:scale-95">
             <span class="text-base">🗺️</span>
             <span class="text-[10px] leading-tight">Rute Masjid</span>
         </button>
     </div>
 </div>   
-<!-- 2. RUNNING TEXT / MARQUEE UMUM -->
+
+        <!-- 2. RUNNING TEXT / MARQUEE UMUM -->
         <div class="bg-emerald-900 text-emerald-100 text-xs py-2 px-4 rounded-xl overflow-hidden whitespace-nowrap shadow-inner border border-emerald-800 flex items-center gap-2">
             <div class="overflow-hidden w-full relative">
                 <div class="animate-marquee font-medium inline-block" id="running-text-content">
@@ -86,25 +83,21 @@
                 </div>
             </div>
         </div>
-        <!-- 3. SLIDER GAMBAR DOKUMENTASI KEGIATAN -->
-<div class="space-y-1">
-    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider text-center flex items-center justify-center gap-2">
-        <span></span> Dokumentasi Kegiatan Masjid AT-TAQWA
-    </p>
-    <div class="relative rounded-xl overflow-hidden shadow-sm group border border-emerald-100 bg-gray-900 min-h-[230px] flex items-center justify-center">
-        <div id="login-slider" class="w-full h-full flex transition-transform duration-500 ease-in-out">
-            <div class="min-w-full w-full flex items-center justify-center h-[200px] bg-emerald-950 text-emerald-400 text-xs">
-                Memuat foto kegiatan dari sistem...
-            </div>
-        </div>
- <button onclick="slideSebelumnya()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white rounded-full p-1.5 focus:outline-none transition opacity-70 group-hover:opacity-100 text-xs z-10">
-                    &#10094;
-                </button>
-                <button onclick="slideBerikutnya()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white rounded-full p-1.5 focus:outline-none transition opacity-70 group-hover:opacity-100 text-xs z-10">
-                    &#10095;
-                </button>
 
-                <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1.5 z-10" id="slider-dots"></div>
+        <!-- 3. SLIDER GAMBAR DOKUMENTASI KEGIATAN -->
+        <div class="space-y-2">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider text-center flex items-center justify-center gap-1.5">
+                Dokumentasi Kegiatan Masjid
+            </p>
+            <div class="relative rounded-xl overflow-hidden shadow-sm group border border-emerald-100 bg-gray-900 min-h-[200px] flex items-center justify-center">
+                <div id="login-slider" class="w-full h-full flex transition-transform duration-500 ease-in-out">
+                    <div class="min-w-full w-full flex items-center justify-center h-[200px] bg-emerald-950 text-emerald-400 text-xs">
+                        Memuat foto kegiatan dari sistem...
+                    </div>
+                </div>
+                <button onclick="slideSebelumnya()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white rounded-full p-1.5 focus:outline-none transition opacity-70 group-hover:opacity-100 text-xs z-10">&#10094;</button>
+                <button onclick="slideBerikutnya()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white rounded-full p-1.5 focus:outline-none transition opacity-70 group-hover:opacity-100 text-xs z-10">&#10095;</button>
+                <div class="absolute bottom-1 left-1/2 -translate-x-1/2 flex space-x-1.5 z-10" id="slider-dots"></div>
             </div>
         </div>
 
@@ -222,8 +215,8 @@
             <div class="text-[12px] text-amber-900 bg-amber-100/60 p-2.5 rounded-lg border border-amber-200 space-y-1">
                 <p class="font-semibold text-amber-950">💡 Catatan Konfirmasi Donasi:</p>
                 <p class="text-gray-700 leading-snug text-justify">
-                    &bull;  Setelah melakukan transfer, mohon klik tombol hijau di atas untuk mengirimkan bukti transfer kepada Ketua DKM agar tercatat transparan dalam rekapitulasi kas masjid.<br>
-                    &bull; Jazakumullah khairan katsiran kepada para jamaah dan donatur yang telah menyalurkan infak & sedekahnya melalui pengurus DKM Masjid AT-TAQWA. Semoga diberkahi serta dilipatgandakan oleh Allah SWT dan menjadi amal jariyah yang mengalir pahalanya. Aamiin.
+                    &bull; Setelah melakukan transfer, mohon klik tombol hijau di atas untuk mengirimkan bukti transfer kepada Ketua DKM agar tercatat transparan dalam rekapitulasi kas masjid.<br>
+                    &bull; Jazakumullah khairan katsiran kepada para jamaah dan donatur. Semoga diberkahi serta dilipatgandakan oleh Allah SWT. Aamiin.
                 </p>
             </div>
         </div>
@@ -239,7 +232,7 @@
 
         <div class="p-3 bg-emerald-50/60 border border-emerald-100 rounded-xl text-center">
             <p class="text-[11px] text-emerald-800 font-medium">
-                ✨ Data diperbarui secara Berkala & Transparan dari sistem pengurus Masjid At-Taqwa.
+                ✨ Data ini diperbarui secara berkala & transparan dari sistem pengurus Masjid At-Taqwa.
             </p>
         </div>
     </main>
@@ -250,11 +243,9 @@
             <div class="bg-amber-500 text-white px-4 py-3 flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <span class="text-lg">📢</span>
-                    <h3 class="font-bold text-sm">Pengumuman & Informasi Masjid</h3>
+                    <h3 class="font-bold text-sm">Pengumuman Masjid</h3>
                 </div>
-                <button onclick="tutupModalPengumuman()" class="text-white/80 hover:text-white text-lg font-bold p-1">
-                    &times;
-                </button>
+                <button onclick="tutupModalPengumuman()" class="text-white/80 hover:text-white text-lg font-bold p-1">&times;</button>
             </div>
             <div class="p-4 max-h-[60vh] overflow-y-auto">
                 <div id="isi-pengumuman-modal" class="text-xs text-gray-700 leading-relaxed whitespace-pre-line">
@@ -262,9 +253,7 @@
                 </div>
             </div>
             <div class="bg-gray-50 px-4 py-2.5 text-right border-t border-gray-100">
-                <button onclick="tutupModalPengumuman()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-1.5 rounded-lg text-xs transition">
-                    Tutup
-                </button>
+                <button onclick="tutupModalPengumuman()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-1.5 rounded-lg text-xs transition">Tutup</button>
             </div>
         </div>
     </div>
@@ -283,82 +272,139 @@
         let sliderDataCache = [];
         let currentSlide = 0;
         let sliderTimer = null;
+        let jadwalSholatCache = {}; // Menyimpan jadwal sholat untuk pengecekan highlight
 
         const defaultSlides = [
-            {
-                judul: "-",
-                keterangan: "-",
-                foto: "-"
-            },
-            {
-                judul: "-",
-                keterangan: "-",
-                foto: "-"
-            }
+            { judul: "-", keterangan: "-", foto: "-" },
+            { judul: "-", keterangan: "-", foto: "-" }
         ];
 
         async function inisialisasiAplikasi() {
-	    mulaiJamRealtime();
+            mulaiJamRealtime();
             await Promise.all([
                 muatJadwalSholatOtomatis(),
                 muatSliderOtomatis(),
                 muatDataMenu()
             ]);
         }
-// Fungsi untuk menjalankan jam real-time
-function mulaiJamRealtime() {
-    const updateJam = () => {
-        const now = new Date();
-        const jam = String(now.getHours()).padStart(2, '0');
-        const menit = String(now.getMinutes()).padStart(2, '0');
-        const detik = String(now.getSeconds()).padStart(2, '0');
-        
-        const elJam = document.getElementById('jam-realtime');
-        if (elJam) {
-            elJam.innerText = `${jam}:${menit}:${detik}`;
-        }
-    };
-    
-    updateJam(); 
-    setInterval(updateJam, 1000); // Update setiap 1 detik
-}
 
-        // Fungsi Otomatis Mengambil Jadwal Sholat (Menggunakan API Kemenag/Aladhan berdasarkan koordinat atau wilayah default Dumai/Pekanbaru/Nasional)
-        async function muatJadwalSholatOtomatis() {
-    try {
-        const now = new Date();
-        
-        // Format Tanggal Cantik untuk Header widget
-        const opsiTanggal = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
-        document.getElementById('label-tanggal-sholat').innerText = now.toLocaleDateString('id-ID', opsiTanggal);
+        function mulaiJamRealtime() {
+            const updateJam = () => {
+                const now = new Date();
+                const jam = String(now.getHours()).padStart(2, '0');
+                const menit = String(now.getMinutes()).padStart(2, '0');
+                const detik = String(now.getSeconds()).padStart(2, '0');
+                
+                const elJam = document.getElementById('jam-realtime');
+                if (elJam) {
+                    elJam.innerText = `${jam}:${menit}:${detik}`;
+                }
 
-        // Menggunakan endpoint berdasarkan Kota (Contoh: Pekanbaru / wilayah terdekat)
-        // Anda bisa mengganti city=Pekanbaru dengan kabupaten/kota Anda jika diperlukan
-        const response = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Pekanbaru&country=Indonesia&method=11');
-        const result = await response.json();
-        
-        if (result && result.code === 200 && result.data && result.data.timings) {
-            const timings = result.data.timings;
+                // Cek dan jalankan highlight jadwal sholat setiap detik
+                perbaruiHighlightSholat(jam, menit);
+            };
             
-            // Memasukkan data jam sholat ke elemen HTML
-            document.getElementById('sholat-subuh').innerText = timings.Fajr;
-            document.getElementById('sholat-dzuhur').innerText = timings.Dhuhr;
-            document.getElementById('sholat-ashar').innerText = timings.Asr;
-            document.getElementById('sholat-maghrib').innerText = timings.Maghrib;
-            document.getElementById('sholat-isya').innerText = timings.Isha;
-        } else {
-            throw new Error("Format respons API tidak valid");
+            updateJam(); 
+            setInterval(updateJam, 1000);
         }
-    } catch (err) {
-        console.error("Gagal memuat jadwal sholat:", err);
-        // Fallback jika gagal fetch agar tidak tetap '--:--'
-        document.getElementById('sholat-subuh').innerText = "04:45";
-        document.getElementById('sholat-dzuhur').innerText = "12:20";
-        document.getElementById('sholat-ashar').innerText = "15:40";
-        document.getElementById('sholat-maghrib').innerText = "18:25";
-        document.getElementById('sholat-isya').innerText = "19:35";
-    }
-}
+
+        async function muatJadwalSholatOtomatis() {
+            try {
+                const now = new Date();
+                const opsiTanggal = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
+                document.getElementById('label-tanggal-sholat').innerText = now.toLocaleDateString('id-ID', opsiTanggal);
+
+                const response = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Pekanbaru&country=Indonesia&method=11');
+                const result = await response.json();
+                
+                if (result && result.code === 200 && result.data && result.data.timings) {
+                    const timings = result.data.timings;
+                    
+                    // Simpan ke cache agar bisa diakses fungsi highlight
+                    jadwalSholatCache = {
+                        Subuh: timings.Fajr,
+                        Dzuhur: timings.Dhuhr,
+                        Ashar: timings.Asr,
+                        Maghrib: timings.Maghrib,
+                        Isya: timings.Isha
+                    };
+
+                    document.getElementById('sholat-subuh').innerText = timings.Fajr;
+                    document.getElementById('sholat-dzuhur').innerText = timings.Dhuhr;
+                    document.getElementById('sholat-ashar').innerText = timings.Asr;
+                    document.getElementById('sholat-maghrib').innerText = timings.Maghrib;
+                    document.getElementById('sholat-isya').innerText = timings.Isha;
+                } else {
+                    throw new Error("Format respons API tidak valid");
+                }
+            } catch (err) {
+                console.error("Gagal memuat jadwal sholat:", err);
+                jadwalSholatCache = { Subuh: "04:45", Dzuhur: "12:20", Ashar: "15:40", Maghrib: "18:25", Isya: "19:35" };
+                document.getElementById('sholat-subuh').innerText = "04:45";
+                document.getElementById('sholat-dzuhur').innerText = "12:20";
+                document.getElementById('sholat-ashar').innerText = "15:40";
+                document.getElementById('sholat-maghrib').innerText = "18:25";
+                document.getElementById('sholat-isya').innerText = "19:35";
+            }
+        }
+
+        // FUNGSI HIGHLIGHT JADWAL SHOLAT BERDASARKAN WAKTU SEKARANG
+        function perbaruiHighlightSholat(jamStr, menitStr) {
+            if (!jadwalSholatCache.Subuh) return;
+
+            const waktuSekarangMenit = parseInt(jamStr) * 60 + parseInt(menitStr);
+
+            const keMenit = (waktu) => {
+                if (!waktu) return 0;
+                const p = waktu.split(':');
+                return parseInt(p[0]) * 60 + parseInt(p[1]);
+            };
+
+            const subuh = keMenit(jadwalSholatCache.Subuh);
+            const dzuhur = keMenit(jadwalSholatCache.Dzuhur);
+            const ashar = keMenit(jadwalSholatCache.Ashar);
+            const maghrib = keMenit(jadwalSholatCache.Maghrib);
+            const isya = keMenit(jadwalSholatCache.Isya);
+
+            // Daftar kotak sholat beserta ID span teks di dalamnya
+            const daftarSholat = [
+                { boxId: 'box-subuh', labelId: 'label-subuh-text', timeId: 'sholat-subuh' },
+                { boxId: 'box-dzuhur', labelId: 'label-dzuhur-text', timeId: 'sholat-dzuhur' },
+                { boxId: 'box-ashar', labelId: 'label-ashar-text', timeId: 'sholat-ashar' },
+                { boxId: 'box-maghrib', labelId: 'label-maghrib-text', timeId: 'sholat-maghrib' },
+                { boxId: 'box-isya', labelId: 'label-isya-text', timeId: 'sholat-isya' }
+            ];
+
+            // Reset semua kotak kembali ke tampilan normal (emerald-50)
+            daftarSholat.forEach(item => {
+                const el = document.getElementById(item.boxId);
+                if (el) {
+                    el.className = "bg-emerald-50 p-1 rounded transition-all duration-300 border border-transparent";
+                }
+            });
+
+            // Tentukan sholat mana yang sedang aktif
+            let targetBoxId = "";
+            if (waktuSekarangMenit >= subuh && waktuSekarangMenit < dzuhur) {
+                targetBoxId = "box-subuh";
+            } else if (waktuSekarangMenit >= dzuhur && waktuSekarangMenit < ashar) {
+                targetBoxId = "box-dzuhur";
+            } else if (waktuSekarangMenit >= ashar && waktuSekarangMenit < maghrib) {
+                targetBoxId = "box-ashar";
+            } else if (waktuSekarangMenit >= maghrib && waktuSekarangMenit < isya) {
+                targetBoxId = "box-maghrib";
+            } else if (waktuSekarangMenit >= isya || waktuSekarangMenit < subuh) {
+                targetBoxId = "box-isya";
+            }
+
+            // Terapkan highlight HANYA pada latar belakang kotak agar struktur teks aman dan rapi
+            if (targetBoxId) {
+                const activeBox = document.getElementById(targetBoxId);
+                if (activeBox) {
+                    activeBox.className = "bg-amber-400 p-1 rounded transition-all duration-300 shadow-sm border border-amber-300 scale-105";
+                }
+            }
+        }
 
         function kirimKonfirmasiWA(e) {
             e.preventDefault();
@@ -406,7 +452,7 @@ function mulaiJamRealtime() {
 
         function parseImageUrl(url) {
             if (!url || typeof url !== 'string' || !url.trim()) {
-                return { url: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&w=800&q=80", driveId: null };
+                return { url: "", driveId: null };
             }
             let cleanUrl = url.trim().replace("http://", "https://");
             let driveMatch = cleanUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || cleanUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
@@ -423,7 +469,7 @@ function mulaiJamRealtime() {
                 const altUrls = [
                     `https://lh3.googleusercontent.com/d/${driveId}`,
                     `https://drive.google.com/uc?export=view&id=${driveId}`,
-                    `https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800&q=80`
+                    `https://img erros, pastikan internet anda stabil`
                 ];
                 if (step < altUrls.length) {
                     img.setAttribute('data-step', step + 1);
@@ -432,7 +478,7 @@ function mulaiJamRealtime() {
                 }
             }
             img.onerror = null;
-            img.src = "https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800&q=80";
+            img.src = "img erros, pastikan internet anda stabil";
         }
 
         async function muatSliderOtomatis() {
@@ -525,7 +571,7 @@ function mulaiJamRealtime() {
                         let teksRunning = dataRunning[0].judul || dataRunning[0].isi;
                         const runningTextEl = document.getElementById('running-text-content');
                         if (runningTextEl && teksRunning) {
-                            runningTextEl.innerHTML = teksRunning.replace(/&bull;/g, '&bull;');
+                            runningTextEl.innerHTML = teksRunning;
                         }
                     }
                 }
@@ -539,7 +585,7 @@ function mulaiJamRealtime() {
             let gabunganIsi = "";
             menuDataCache.forEach(item => {
                 let t = item.judul ? item.judul.toLowerCase() : "";
-                if (t.includes('masuk') || t.includes('keluar') || t.includes('kas') || t.includes('keuangan')) {
+                if (t.includes('masuk') || t.includes('keluar') || t.includes('kas') || t.includes('keuangan') || t.includes('pemasukan') || t.includes('pengeluaran')) {
                     gabunganIsi += item.isi + "\n";
                 }
             });
@@ -590,13 +636,11 @@ function mulaiJamRealtime() {
             data.forEach(item => {
                 let t = item.judul ? item.judul.toLowerCase() : "";
                 
-                // 1. Pengumuman Modal
                 if (t.includes('pengumuman')) {
                     document.getElementById('isi-pengumuman-modal').innerText = item.isi;
                     const badge = document.getElementById('badge-pengumuman');
                     if (badge) badge.classList.remove('hidden');
                 } 
-                // 2. Agenda Kegiatan
                 else if (t.includes('agenda') || t.includes('kegiatan') || t.includes('jadwal')) {
                     const contentAgendaEl = document.getElementById('content-agenda');
                     let barisAgenda = item.isi.split('\n');
@@ -627,7 +671,7 @@ function mulaiJamRealtime() {
                     contentAgendaEl.innerHTML = htmlAgenda;
                     document.getElementById('sec-agenda').classList.remove('hidden');
                 } 
-                else if (t.includes('masuk') || t.includes('pemasukan')) {
+                else if (t.includes('masuk') || t.includes('pemasukan') || (t.includes('kas') && !t.includes('keluar'))) {
                     let barisData = dataMasterTransaksi.split('\n');
                     let htmlMasuk = `<table class="w-full text-left border-collapse text-xs"><thead><tr class="bg-emerald-100 text-emerald-900 border-b"><th class="p-2">Sumber</th><th class="p-2">Keterangan</th><th class="p-2 text-right">Jumlah</th></tr></thead><tbody class="divide-y divide-gray-200">`;
                     let totalMasuk = 0;
@@ -648,7 +692,8 @@ function mulaiJamRealtime() {
                     htmlMasuk += `</tbody></table>`;
                     document.getElementById('content-masuk').innerHTML = htmlMasuk;
                     document.getElementById('sec-masuk').classList.remove('hidden');
-                } else if (t.includes('keluar') || t.includes('pengeluaran')) {
+                } 
+                else if (t.includes('keluar') || t.includes('pengeluaran')) {
                     let barisData = dataMasterTransaksi.split('\n');
                     let htmlKeluar = `<table class="w-full text-left border-collapse text-xs"><thead><tr class="bg-red-100 text-red-900 border-b"><th class="p-2">Keperluan</th><th class="p-2">Keterangan</th><th class="p-2 text-right">Jumlah</th></tr></thead><tbody class="divide-y divide-gray-200">`;
                     let totalKeluar = 0;
@@ -669,65 +714,13 @@ function mulaiJamRealtime() {
                     htmlKeluar += `</tbody></table>`;
                     document.getElementById('content-keluar').innerHTML = htmlKeluar;
                     document.getElementById('sec-keluar').classList.remove('hidden');
-                } else if (t.includes('kontak') || t.includes('pengurus')) {
+                } 
+                else if (t.includes('kontak') || t.includes('pengurus')) {
                     document.getElementById('content-kontak').innerText = item.isi;
                     document.getElementById('sec-kontak').classList.remove('hidden');
                 }
             });
         }
-function bukaRuteKeMasjid() {
-    // 1. Tentukan Titik Koordinat Masjid AT-TAQWA (Ganti dengan koordinat masjid yang akurat)
-    const masjidLat = 1.268489;  // Contoh Latitude Masjid
-    const masjidLng = 101.092149; // Contoh Longitude Masjid
-    const namaMasjid = "Masjid AT-TAQWA Desa Buluh Manis";
-
-    // 2. Cek apakah browser mendukung Geolocation
-    if (!navigator.geolocation) {
-        alert("Maaf, browser perangkat Anda tidak mendukung fitur deteksi lokasi.");
-        // Jika tidak didukung, arahkan langsung ke titik masjid saja tanpa GPS asal
-        window.open(`https://www.google.com/maps/search/?api=1&query=${masjidLat},${masjidLng}`, '_blank');
-        return;
-    }
-
-    // Berikan indikator loading kecil jika diperlukan
-    const btn = event.currentTarget;
-    const originalText = btn.innerHTML;
-    btn.innerHTML = `<span class="text-xs">Mencari GPS...</span>`;
-    btn.disabled = true;
-
-    // 3. Ambil posisi koordinat HP Jamaah saat ini
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-            const userLat = position.coords.latitude;
-            const userLng = position.coords.longitude;
-
-            // Kembalikan tombol seperti semula
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-
-            // 4. Buka Google Maps Directions (Dari Koordinat HP -> Koordinat Masjid)
-            const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${masjidLat},${masjidLng}&destination_place_id=Masjid+AT-TAQWA`;
-            
-            window.open(gmapsUrl, '_blank');
-        },
-        (error) => {
-            // Kembalikan tombol jika gagal/izin ditolak
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-
-            let pesanError = "Gagal mendeteksi lokasi Anda.";
-            if (error.code === error.PERMISSION_DENIED) {
-                pesanError = "Izin lokasi ditolak. Mohon aktifkan izin GPS / Lokasi pada pengaturan browser HP Anda.";
-            }
-            alert(pesanError);
-            
-            // Fallback: Tetap buka peta lokasi masjid tanpa titik awal GPS
-            window.open(`https://www.google.com/maps/search/?api=1&query=${masjidLat},${masjidLng}`, '_blank');
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-    );
-}
-
     </script>
 </body>
 </html>
