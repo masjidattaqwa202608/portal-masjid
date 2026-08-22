@@ -23,7 +23,7 @@
         }
         .animate-marquee {
             display: inline-block;
-            animation: marquee 8s linear infinite;
+            animation: marquee 10s linear infinite;
         }
     </style>
 </head>
@@ -114,7 +114,14 @@
 
         <!-- 5. SALDO KAS & REKAPITULASI KEUANGAN -->
         <div id="kas-summary-card" class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-2.5 shadow-sm">
-            <h4 class="font-bold text-xs text-emerald-900 uppercase tracking-wider text-center">📊 Rekapitulasi & Saldo Kas Masjid</h4>
+            <div class="flex justify-between items-center border-b border-emerald-200 pb-2">
+                <h4 class="font-bold text-xs text-emerald-900 uppercase tracking-wider">📊 Rekapitulasi & Saldo Kas Masjid</h4>
+                <!-- Tanggal Cetak Otomatis -->
+                <span class="text-[11px] text-gray-500 font-medium">
+                    Tanggal: <script>document.write(new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }));</script>
+                </span>
+            </div>
+
             <div class="space-y-1.5 text-xs">
                 <div class="flex justify-between items-center bg-white p-2 rounded-lg border border-emerald-100">
                     <span class="text-gray-600 font-medium">(+) Total Dana Masuk</span>
@@ -128,15 +135,7 @@
                     <span class="font-bold">(=) Saldo Akhir Kas</span>
                     <span id="sum-saldo" class="font-extrabold text-sm text-gold">Rp 0</span>
                 </div>
-<!-- Tombol Cetak Laporan Keuangan Keseluruhan & Tanda Tangan -->
-<div class="pt-2">
-    <button onclick="cetakLaporanKas()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition shadow-sm">
-        <span>🖨️</span> Cetak Laporan Keuangan & Tanda Tangan Pengurus
-    </button>
-</div>
-            </div>
-
-
+                             
             <div id="sec-jenis-kas-wrapper" class="hidden pt-1">
                 <button onclick="toggleSection('rincian-jenis-kas', 'btn-icon-jenis')" class="w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-xs font-semibold py-2 px-3 rounded-lg flex items-center justify-between transition">
                     <span>📋 Lihat Rincian Per Jenis Kas</span>
@@ -185,6 +184,15 @@
                 </button>
             </div>
         </div>
+
+ <!-- Tombol Cetak Laporan Keuangan Keseluruhan & Tanda Tangan -->
+                
+                    <button onclick="cetakLaporanKas()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition shadow-sm">
+                        <span>🖨️</span> Cetak Laporan Keuangan & Tanda Tangan Pengurus
+                    </button>
+                </div>
+            </div>
+
         <!-- 8. KONTAK DKM & PENGURUS -->
         <div id="sec-kontak" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hidden">
             <div class="bg-emerald-700 text-white p-3 flex items-center space-x-2">
@@ -823,42 +831,47 @@ function cetakData(jenis) {
     }, 500);
 }
 function cetakLaporanKas() {
-    // 1. Ambil konten saat ini
+    // 1. Simpan konten asli body
+    const originalContent = document.body.innerHTML;
+
+    // 2. Ambil elemen ringkasan, masuk, dan keluar
+    const ringkasanKas = document.getElementById('kas-summary-card') ? document.getElementById('kas-summary-card').innerHTML : '';
     const summaryMasuk = document.getElementById('content-masuk') ? document.getElementById('content-masuk').innerHTML : '';
     const summaryKeluar = document.getElementById('content-keluar') ? document.getElementById('content-keluar').innerHTML : '';
-    const ringkasanKas = document.getElementById('kas-summary-card') ? document.getElementById('kas-summary-card').innerHTML : '';
-
-    // 2. Simpan konten asli body
-    const originalContent = document.body.innerHTML;
 
     // 3. Masukkan konten cetak ke body
     document.body.innerHTML = `
-        <div style="font-family: Arial, sans-serif; padding: 20px;">
+        <div id="print-area" style="font-family: Arial, sans-serif; padding: 20px;">
             <div style="text-align: center; border-bottom: 2px solid #000; margin-bottom: 20px;">
                 <h2>MASJID AT-TAQWA</h2>
                 <p>Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
                 <h3>LAPORAN KEUANGAN KAS MASJID</h3>
             </div>
-            <div>${ringkasanKas.replace(/<div class="pt-2">.*<\/div>/s, '')}</div>
+            <div id="temp-ringkasan">${ringkasanKas}</div>
             <h3>Rincian Dana Masuk</h3>
             <div>${summaryMasuk}</div>
             <h3>Rincian Dana Keluar</h3>
             <div>${summaryKeluar}</div>
             <div style="margin-top: 50px; display: flex; justify-content: space-between;">
-                <div style="text-align: center;"> <p>Ketua DKM</p><br><br><br><p><strong>( WISNO SAPUTRA )</strong></p> </div>
-                <div style="text-align: center;"> <p>Sekretaris</p><br><br><br><p><strong>( HADI SAPUTRA )</strong></p> </div>
-                <div style="text-align: center;"> <p>Bendahara</p><br><br><br><p><strong>( SURIADI )</strong></p> </div>
+                <div style="text-align: center;"> <p>Mengetahui,<br>Ketua DKM</p><br><br><br><p><strong>( WISNO SAPUTRA )</strong></p> </div>
+                <div style="text-align: center;"> <p><br>Sekretaris</p><br><br><br><p><strong>( HADI SAPUTRA )</strong></p> </div>
+                <div style="text-align: center;"> <p><br>Bendahara</p><br><br><br><p><strong>( SURIADI )</strong></p> </div>
             </div>
         </div>
     `;
 
-    // 4. Cetak
+    // 4. HAPUS PAKSA SEMUA TOMBOL DI DALAM AREA CETAK SECARA LANGSUNG
+    const printArea = document.getElementById('print-area');
+    if (printArea) {
+        const allButtons = printArea.querySelectorAll('button, a.btn, input[type="button"], #sec-jenis-kas-wrapper, .pt-2');
+        allButtons.forEach(el => el.remove());
+    }
+
+    // 5. Cetak
     window.print();
 
-    // 5. Kembalikan ke konten asli
+    // 6. Kembalikan ke konten asli
     document.body.innerHTML = originalContent;
-    
-    // Perlu me-reload script atau event listener jika diperlukan
     location.reload(); 
 }
     </script>
