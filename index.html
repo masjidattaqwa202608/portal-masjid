@@ -23,10 +23,19 @@
         }
         .animate-marquee {
             display: inline-block;
-            animation: marquee 10s linear infinite;
+            animation: marquee 7s linear infinite;
         }
-    </style>
-</head>
+/* 👉 TAMBAHKAN KODE INI DI SINI UNTUK MERAPATKAN BAGIAN ATAS SAAT DICETAK */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            #print-area {
+                padding-top: 2px !important;
+            }
+        }
+    </style></head>
 <body class="bg-gray-100 font-sans antialiased text-gray-800 min-h-screen flex flex-col justify-between" onload="inisialisasiAplikasi()">
 
     <!-- ================= HEADER UTAMA ================= -->
@@ -812,11 +821,13 @@ function cetakData(jenis) {
             </style>
         </head>
         <body>
-            <div class="header">
-                <h2>MASJID AT-TAQWA DESA BULUH MANIS</h2>
-                <p>Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
-                <h3>${judulLaporan}</h3>
-            </div>
+
+            <div class="header" style="text-align: center;">
+    <h1 class="font-extrabold text-xl sm:text-2xl tracking-wider uppercase text-gold" style="margin-bottom: 2px;">PENGURUS MASJID AT-TAQWA</h1>
+    <p style="margin: 0 0 2px 0; font-size: 12px;">DESA BULUH MANIS KECAMATAN BATHIN SOLAPAN KABUPATEN BENGKALIS</p>
+    <p style="margin: 0 0 5px 0; font-size: 12px;">Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
+    <h3 style="margin: 0; font-weight: bold; font-size: 14px;">${judulLaporan}</h3>
+</div>
             
             <div class="info">
                 <p><strong>Tanggal Cetak:</strong> ${new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
@@ -842,6 +853,11 @@ function cetakData(jenis) {
                     <p><strong>( SURIADI )</strong></p>
                 </div>
             </div>
+<!-- 👉 MASUKKAN KODE CATATAN KAKI DI SINI (Tepat sebelum penutup print-area) -->
+    <div style="margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 10px; font-size: 15px; color: #555; text-align: center; font-style: italic;">
+        <p>Laporan ini dibuat secara transparan dan akuntabel untuk jamaah Masjid At-Taqwa serta pihak-pihak yang berkepentingan.</p>
+    </div>
+
         </body>
         </html>
     `);
@@ -867,7 +883,8 @@ function cetakLaporanKas() {
     document.body.innerHTML = `
         <div id="print-area" style="font-family: Arial, sans-serif; padding: 20px;">
             <div style="text-align: center; border-bottom: 2px solid #000; margin-bottom: 20px;">
-                <h2>MASJID AT-TAQWA</h2>
+                <h1 class="font-extrabold text-xl sm:text-2xl tracking-wider uppercase text-gold">PENGURUS MASJID AT-TAQWA</h1>
+		<p>DESA BULUH MANIS KECAMATAN BATHIN SOLAPAN KABUPATEN BENGKALIS<p>
                 <p>Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
                 <h3>LAPORAN KEUANGAN KAS MASJID</h3>
             </div>
@@ -881,6 +898,10 @@ function cetakLaporanKas() {
                 <div style="text-align: center;"> <p><br>Sekretaris</p><br><br><br><p><strong>( HADI SAPUTRA )</strong></p> </div>
                 <div style="text-align: center;"> <p><br>Bendahara</p><br><br><br><p><strong>( SURIADI )</strong></p> </div>
             </div>
+<!-- 👉 MASUKKAN KODE CATATAN KAKI DI SINI (Tepat sebelum penutup print-area) -->
+    <div style="margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 10px; font-size: 15px; color: #555; text-align: center; font-style: italic;">
+        <p>Laporan ini dibuat secara transparan dan akuntabel untuk jamaah Masjid At-Taqwa serta pihak-pihak yang berkepentingan.</p>
+    </div>
         </div>
     `;
 
