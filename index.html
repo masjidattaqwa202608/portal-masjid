@@ -23,7 +23,7 @@
         }
         .animate-marquee {
             display: inline-block;
-            animation: marquee 7s linear infinite;
+            animation: marquee 10s linear infinite;
         }
     </style>
 </head>
@@ -86,7 +86,7 @@
 
         <!-- 3. SLIDER GAMBAR DOKUMENTASI KEGIATAN -->
         <div class="space-y-2">
-            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider text-center flex items-center justify-center gap-1.5">
+            <p class="text-xs font-semibold text-gold-500 uppercase tracking-wider text-center flex items-center justify-center gap-1.5">
                 Dokumentasi Kegiatan Masjid at-taqwa
             </p>
             <div class="relative rounded-xl overflow-hidden shadow-sm group border border-emerald-100 bg-gray-900 min-h-[200px] flex items-center justify-center">
@@ -128,7 +128,14 @@
                     <span class="font-bold">(=) Saldo Akhir Kas</span>
                     <span id="sum-saldo" class="font-extrabold text-sm text-gold">Rp 0</span>
                 </div>
+<!-- Tombol Cetak Laporan Keuangan Keseluruhan & Tanda Tangan -->
+<div class="pt-2">
+    <button onclick="cetakLaporanKas()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition shadow-sm">
+        <span>🖨️</span> Cetak Laporan Keuangan & Tanda Tangan Pengurus
+    </button>
+</div>
             </div>
+
 
             <div id="sec-jenis-kas-wrapper" class="hidden pt-1">
                 <button onclick="toggleSection('rincian-jenis-kas', 'btn-icon-jenis')" class="w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-xs font-semibold py-2 px-3 rounded-lg flex items-center justify-between transition">
@@ -141,7 +148,7 @@
 
         <!-- 6. RINCIAN DANA MASUK -->
         <div id="sec-masuk" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hidden">
-            <button onclick="toggleSection('content-masuk', 'btn-icon-masuk')" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white p-3 flex items-center justify-between transition text-left">
+            <button onclick="toggleSection('content-masuk', 'btn-icon-masuk'); toggleSection('btn-cetak-masuk', null);" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white p-3 flex items-center justify-between transition text-left">
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">📥</span>
                     <h3 class="font-bold text-sm tracking-wide">Rincian Dana Masuk</h3>
@@ -151,11 +158,17 @@
             <div id="content-masuk" class="overflow-x-auto p-3 hidden border-t border-gray-100">
                 Memuat data dana masuk...
             </div>
+            <!-- TOMBOL CETAK (AWALNYA TERSEMBUNYI, IKUT TERBUKA SAAT AKORDION DIBUKA) -->
+            <div id="btn-cetak-masuk" class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end hidden">
+                <button onclick="cetakData('masuk')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-1.5 px-3 rounded-lg text-xs flex items-center gap-1.5 transition shadow-sm">
+                    <span>🖨️</span> Cetak Dana Masuk
+                </button>
+            </div>
         </div>
 
         <!-- 7. RINCIAN DANA KELUAR -->
         <div id="sec-keluar" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hidden">
-            <button onclick="toggleSection('content-keluar', 'btn-icon-keluar')" class="w-full bg-emerald-700 hover:bg-red-800 text-white p-3 flex items-center justify-between transition text-left">
+            <button onclick="toggleSection('content-keluar', 'btn-icon-keluar'); toggleSection('btn-cetak-keluar', null);" class="w-full bg-emerald-700 hover:bg-red-800 text-white p-3 flex items-center justify-between transition text-left">
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">📤</span>
                     <h3 class="font-bold text-sm tracking-wide">Rincian Dana Keluar</h3>
@@ -165,8 +178,13 @@
             <div id="content-keluar" class="overflow-x-auto p-3 hidden border-t border-gray-100">
                 Memuat data dana keluar...
             </div>
+            <!-- TOMBOL CETAK (AWALNYA TERSEMBUNYI, IKUT TERBUKA SAAT AKORDION DIBUKA) -->
+            <div id="btn-cetak-keluar" class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end hidden">
+                <button onclick="cetakData('keluar')" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-1.5 px-3 rounded-lg text-xs flex items-center gap-1.5 transition shadow-sm">
+                    <span>🖨️</span> Cetak Dana Keluar
+                </button>
+            </div>
         </div>
-
         <!-- 8. KONTAK DKM & PENGURUS -->
         <div id="sec-kontak" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hidden">
             <div class="bg-emerald-700 text-white p-3 flex items-center space-x-2">
@@ -469,7 +487,7 @@
                 const altUrls = [
                     `https://lh3.googleusercontent.com/d/${driveId}`,
                     `https://drive.google.com/uc?export=view&id=${driveId}`,
-                    `https://img erros, pastikan internet anda stabil`
+                    `https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800&q=80`
                 ];
                 if (step < altUrls.length) {
                     img.setAttribute('data-step', step + 1);
@@ -478,7 +496,7 @@
                 }
             }
             img.onerror = null;
-            img.src = "img erros, pastikan internet anda stabil";
+            img.src = "https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800&q=80";
         }
 
         async function muatSliderOtomatis() {
@@ -721,6 +739,128 @@
                 }
             });
         }
+function cetakData(jenis) {
+    const isMasuk = jenis === 'masuk';
+    const judulLaporan = isMasuk ? "LAPORAN DANA MASUK (INFAQ / DONASI)" : "LAPORAN DANA KELUAR (OPERASIONAL)";
+    const kontenHtml = document.getElementById(isMasuk ? 'content-masuk' : 'content-keluar').innerHTML;
+    const warnaTema = isMasuk ? "#065f46" : "#dc2626"; // Hijau untuk masuk, Merah untuk keluar
+
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    
+    printWindow.document.write(`
+        <html>
+        <head>
+            <!-- Mengosongkan title agar tidak muncul teks di bagian atas halaman cetak/browser -->
+            <title></title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; color: #333; margin: 0; }
+                h2, h3 { text-align: center; margin: 5px 0; }
+                p { margin: 4px 0; }
+                .header { text-align: center; border-bottom: 2px solid ${warnaTema}; padding-bottom: 10px; margin-bottom: 20px; }
+                .info { margin-bottom: 15px; font-size: 13px; }
+                table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+                th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
+                th { background-color: ${warnaTema}; color: white; }
+                
+                /* Styling Tanda Tangan */
+                .signature-section {
+                    margin-top: 50px;
+                    display: flex;
+                    justify-content: space-between;
+                    page-break-inside: avoid;
+                }
+                .signature-box {
+                    text-align: center;
+                    width: 30%;
+                    font-size: 12px;
+                }
+                .signature-space {
+                    height: 70px; /* Ruang kosong untuk tanda tangan fisik */
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h2>MASJID AT-TAQWA DESA BULUH MANIS</h2>
+                <p>Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
+                <h3>${judulLaporan}</h3>
+            </div>
+            
+            <div class="info">
+                <p><strong>Tanggal Cetak:</strong> ${new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            </div>
+            
+            <div>${kontenHtml}</div>
+
+            <!-- Kolom Tanda Tangan Pengurus -->
+            <div class="signature-section">
+                <div class="signature-box">
+                    <p>Mengetahui,<br><strong>Ketua DKM</strong></p>
+                    <div class="signature-space"></div>
+                    <p><strong>( WISNO SAPUTRA )</strong></p>
+                </div>
+                <div class="signature-box">
+                    <p><br><strong>Sekretaris</strong></p>
+                    <div class="signature-space"></div>
+                    <p><strong>( HADI SAPUTRA )</strong></p>
+                </div>
+                <div class="signature-box">
+                    <p><br><strong>Bendahara</strong></p>
+                    <div class="signature-space"></div>
+                    <p><strong>( SURIADI )</strong></p>
+                </div>
+            </div>
+        </body>
+        </html>
+    `);
+    
+    printWindow.document.close();
+    printWindow.focus();
+    
+    setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+    }, 500);
+}
+function cetakLaporanKas() {
+    // 1. Ambil konten saat ini
+    const summaryMasuk = document.getElementById('content-masuk') ? document.getElementById('content-masuk').innerHTML : '';
+    const summaryKeluar = document.getElementById('content-keluar') ? document.getElementById('content-keluar').innerHTML : '';
+    const ringkasanKas = document.getElementById('kas-summary-card') ? document.getElementById('kas-summary-card').innerHTML : '';
+
+    // 2. Simpan konten asli body
+    const originalContent = document.body.innerHTML;
+
+    // 3. Masukkan konten cetak ke body
+    document.body.innerHTML = `
+        <div style="font-family: Arial, sans-serif; padding: 20px;">
+            <div style="text-align: center; border-bottom: 2px solid #000; margin-bottom: 20px;">
+                <h2>MASJID AT-TAQWA</h2>
+                <p>Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
+                <h3>LAPORAN KEUANGAN KAS MASJID</h3>
+            </div>
+            <div>${ringkasanKas.replace(/<div class="pt-2">.*<\/div>/s, '')}</div>
+            <h3>Rincian Dana Masuk</h3>
+            <div>${summaryMasuk}</div>
+            <h3>Rincian Dana Keluar</h3>
+            <div>${summaryKeluar}</div>
+            <div style="margin-top: 50px; display: flex; justify-content: space-between;">
+                <div style="text-align: center;"> <p>Ketua DKM</p><br><br><br><p><strong>( WISNO SAPUTRA )</strong></p> </div>
+                <div style="text-align: center;"> <p>Sekretaris</p><br><br><br><p><strong>( HADI SAPUTRA )</strong></p> </div>
+                <div style="text-align: center;"> <p>Bendahara</p><br><br><br><p><strong>( SURIADI )</strong></p> </div>
+            </div>
+        </div>
+    `;
+
+    // 4. Cetak
+    window.print();
+
+    // 5. Kembalikan ke konten asli
+    document.body.innerHTML = originalContent;
+    
+    // Perlu me-reload script atau event listener jika diperlukan
+    location.reload(); 
+}
     </script>
 </body>
 </html>
