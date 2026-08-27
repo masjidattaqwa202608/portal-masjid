@@ -13,35 +13,48 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ===== BACKGROUND FULL WEBSITE ===== */
+        /* =========================================================
+           BACKGROUND WEBSITE - GITHUB PAGES SAFE
+           File background-masjid.png harus satu folder dengan index.html
+           ========================================================= */
         html, body {
             min-height: 100%;
         }
 
         body {
+            background-color: #062f29 !important;
             background-image:
-                linear-gradient(rgba(3, 35, 31, 0.30), rgba(3, 35, 31, 0.30)),
-                url("a_highly_detailed_wide_cinematic_islamic_themed.png");
-            background-size: cover;
-            background-position: center center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
+                linear-gradient(rgba(2, 30, 26, 0.34), rgba(2, 30, 26, 0.34)),
+                url("./background-masjid.png") !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-attachment: fixed !important;
+        }
+
+        /* Lapisan halus agar background terlihat megah tetapi teks tetap jelas */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 50% 15%, rgba(251,191,36,0.10), transparent 35%),
+                linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.16));
         }
 
         .bg-mosque {
-            background: linear-gradient(135deg, rgba(3, 78, 64, 0.94), rgba(4, 120, 87, 0.88), rgba(6, 78, 59, 0.94));
-            backdrop-filter: blur(3px);
-            -webkit-backdrop-filter: blur(3px);
+            background: linear-gradient(
+                135deg,
+                rgba(6, 95, 70, 0.94) 0%,
+                rgba(4, 120, 87, 0.90) 50%,
+                rgba(6, 78, 59, 0.95) 100%
+            ) !important;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
         }
 
-        /* Kartu dibuat sedikit transparan agar background tetap terlihat */
-        main > div,
-        main > section {
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
-        }
-
-        .text-gold { color: #fbbf24; }
         .text-gold { color: #fbbf24; }
         .bg-gold { background-color: #fbbf24; }
         
@@ -54,6 +67,28 @@
             animation: marquee 5s linear infinite;
         }
 /* 👉 TAMBAHKAN KODE INI DI SINI UNTUK MERAPATKAN BAGIAN ATAS SAAT DICETAK */
+
+        /* Panel utama tetap terang, tetapi sedikit transparan agar background menyatu */
+        main > div,
+        main > section {
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+
+        /* Footer menyatu dengan tema background */
+        footer {
+            background: rgba(255,255,255,0.88) !important;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        @media (max-width: 640px) {
+            body {
+                background-attachment: scroll !important;
+                background-position: center top !important;
+            }
+        }
+
         @media print {
             body {
                 margin: 0;
@@ -349,7 +384,7 @@
     </div>
 
     <!-- ================= FOOTER ================= -->
-    <footer class="text-center py-4 text-xs text-gray-400 border-t bg-white/90 backdrop-blur-sm mt-4">
+    <footer class="text-center py-4 text-xs text-gray-400 border-t bg-white mt-4">
         &copy; 2026 Portal Jamaah Masjid AT-TAQWA &bull; Wisno Saputra &bull; Desa Buluh Manis
     </footer>
 
