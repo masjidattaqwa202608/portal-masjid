@@ -13,7 +13,35 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .bg-mosque { background: linear-gradient(135deg, #065f46 0%, #047857 50%, #064e3b 100%); }
+        /* ===== BACKGROUND FULL WEBSITE ===== */
+        html, body {
+            min-height: 100%;
+        }
+
+        body {
+            background-image:
+                linear-gradient(rgba(3, 35, 31, 0.30), rgba(3, 35, 31, 0.30)),
+                url("a_highly_detailed_wide_cinematic_islamic_themed.png");
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        .bg-mosque {
+            background: linear-gradient(135deg, rgba(3, 78, 64, 0.94), rgba(4, 120, 87, 0.88), rgba(6, 78, 59, 0.94));
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+        }
+
+        /* Kartu dibuat sedikit transparan agar background tetap terlihat */
+        main > div,
+        main > section {
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+
+        .text-gold { color: #fbbf24; }
         .text-gold { color: #fbbf24; }
         .bg-gold { background-color: #fbbf24; }
         
@@ -36,7 +64,7 @@
             }
         }
     </style></head>
-<body class="bg-gray-100 font-sans antialiased text-gray-800 min-h-screen flex flex-col justify-between" onload="inisialisasiAplikasi()">
+<body class="font-sans antialiased text-gray-800 min-h-screen flex flex-col justify-between" onload="inisialisasiAplikasi()">
 
     <!-- ================= HEADER UTAMA ================= -->
     <header class="bg-mosque text-white px-5 py-4 shadow-md text-center">
@@ -321,7 +349,7 @@
     </div>
 
     <!-- ================= FOOTER ================= -->
-    <footer class="text-center py-4 text-xs text-gray-400 border-t bg-white mt-4">
+    <footer class="text-center py-4 text-xs text-gray-400 border-t bg-white/90 backdrop-blur-sm mt-4">
         &copy; 2026 Portal Jamaah Masjid AT-TAQWA &bull; Wisno Saputra &bull; Desa Buluh Manis
     </footer>
 
