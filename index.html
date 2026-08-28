@@ -13,48 +13,6 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* =========================================================
-           BACKGROUND WEBSITE - GITHUB PAGES SAFE
-           File background-masjid.png harus satu folder dengan index.html
-           ========================================================= */
-        html, body {
-            min-height: 100%;
-        }
-
-        body {
-            background-color: #062f29 !important;
-            background-image:
-                linear-gradient(rgba(2, 30, 26, 0.34), rgba(2, 30, 26, 0.34)),
-                url("./background-masjid.png") !important;
-            background-size: cover !important;
-            background-position: center center !important;
-            background-repeat: no-repeat !important;
-            background-attachment: fixed !important;
-        }
-
-        /* Lapisan halus agar background terlihat megah tetapi teks tetap jelas */
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: -1;
-            background:
-                radial-gradient(circle at 50% 15%, rgba(251,191,36,0.10), transparent 35%),
-                linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.16));
-        }
-
-        .bg-mosque {
-            background: linear-gradient(
-                135deg,
-                rgba(6, 95, 70, 0.94) 0%,
-                rgba(4, 120, 87, 0.90) 50%,
-                rgba(6, 78, 59, 0.95) 100%
-            ) !important;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-        }
-
         .text-gold { color: #fbbf24; }
         .bg-gold { background-color: #fbbf24; }
         
@@ -64,106 +22,115 @@
         }
         .animate-marquee {
             display: inline-block;
-            animation: marquee 5s linear infinite;
-        }
-/* 👉 TAMBAHKAN KODE INI DI SINI UNTUK MERAPATKAN BAGIAN ATAS SAAT DICETAK */
-
-        /* Panel utama tetap terang, tetapi sedikit transparan agar background menyatu */
-        main > div,
-        main > section {
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
+            animation: marquee 14s linear infinite;
         }
 
-        /* Footer menyatu dengan tema background */
-        footer {
-            background: rgba(255,255,255,0.88) !important;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+        /* EFEK PANORAMA BERGERAK KHUSUS DI HEADER */
+        @keyframes panoramaMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        @media (max-width: 640px) {
-            body {
-                background-attachment: scroll !important;
-                background-position: center top !important;
-            }
+        .header-panorama {
+            background: linear-gradient(270deg, #022c22, #047857, #06b6d4, #059669, #022c22);
+            background-size: 400% 400%;
+            animation: panoramaMove 8s ease infinite;
         }
 
+        /* Latar belakang utama dibuat tenang / tidak menyilaukan */
+        body {
+            background-color: #022c22;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* RAPIKAN BAGIAN ATAS SAAT DICETAK & SEMBUNYIKAN KONTAK DKM */
         @media print {
             body {
                 margin: 0;
                 padding: 0;
+                background: white !important;
             }
             #print-area {
                 padding-top: 2px !important;
             }
+            /* Menyembunyikan kontak DKM dan tombol terkait saat dicetak */
+            #sec-kontak, 
+            .no-print {
+                display: none !important;
+            }
         }
-    </style></head>
+    </style>
+</head>
 <body class="font-sans antialiased text-gray-800 min-h-screen flex flex-col justify-between" onload="inisialisasiAplikasi()">
 
-    <!-- ================= HEADER UTAMA ================= -->
-    <header class="bg-mosque text-white px-5 py-4 shadow-md text-center">
+    <!-- ================= HEADER UTAMA DENGAN EFEK PANORAMA ================= -->
+    <header class="header-panorama text-white px-5 py-4 shadow-md text-center">
         <p class="text-[10px] uppercase tracking-widest text-emerald-200 font-medium">Pusat Informasi & Layanan Jamaah</p>
         <h1 class="font-extrabold text-xl sm:text-2xl tracking-wider uppercase text-gold">MASJID AT-TAQWA</h1>
         <p class="text-xs text-emerald-100 tracking-wide font-normal pt-0.5">Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
     </header>
 
-<main class="p-3.5 space-y-3.5 max-w-md w-full mx-auto">
-    <!-- KOTAK UTAMA -->
-<div class="bg-white p-3.5 rounded-xl shadow-sm border border-emerald-100 flex items-center justify-between gap-3 w-full mx-auto space-y-2">
-    
-    <!-- BAGIAN KIRI: Tanggal, Jam, Judul, dan Grid Jadwal Sholat -->
-    <div class="flex-grow min-w-0 space-y-1.5">
+<main class="p-3.5 space-y-3.5 max-w-md w-full mx-auto relative z-10">
+    <!-- KOTAK UTAMA JADWAL SHOLAT -->
+    <div class="bg-white/95 backdrop-blur-md p-3.5 rounded-xl shadow-lg border border-emerald-100 w-full mx-auto space-y-2">
         <!-- Baris Atas: Tanggal di Kiri, Jam di Kanan Sejajar -->
         <div class="flex items-center justify-between border-b border-emerald-100 pb-1 gap-2">
-            <div id="label-tanggal-sholat" class="text-[11px] font-bold text-emerald-800 truncate">Memuat...</div>
-            <span id="jam-realtime" class="font-mono font-bold text-xs text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 shrink-0">00:00:00</span>
+            <div id="label-tanggal-sholat" class="text-[11px] font-bold text-emerald-900 truncate">Memuat...</div>
+            <span id="jam-realtime" class="font-mono font-bold text-xs text-emerald-950 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 shrink-0">00:00:00</span>
         </div>
         
         <!-- Judul Bagian -->
-        <div class="text-[11px] font-bold text-emerald-600">JADWAL SHOLAT HARI INI</div>
+        <div class="text-[11px] font-bold text-emerald-700">JADWAL SHOLAT HARI INI</div>
        
         <!-- Kotak Grid Sholat dengan ID untuk Highlight -->
         <div id="jadwal-sholat-container" class="grid grid-cols-5 gap-1 text-center pt-0.5">
-            <div id="box-subuh" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Subuh</span><span id="sholat-subuh" class="font-bold text-xs text-emerald-900">--:--</span></div>
-            <div id="box-dzuhur" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Dzuhur</span><span id="sholat-dzuhur" class="font-bold text-xs text-emerald-900">--:--</span></div>
-            <div id="box-ashar" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Ashar</span><span id="sholat-ashar" class="font-bold text-xs text-emerald-900">--:--</span></div>
-            <div id="box-maghrib" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Maghrib</span><span id="sholat-maghrib" class="font-bold text-xs text-emerald-900">--:--</span></div>
-            <div id="box-isya" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Isya</span><span id="sholat-isya" class="font-bold text-xs text-emerald-900">--:--</span></div>
+            <div id="box-subuh" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Subuh</span><span id="sholat-subuh" class="font-bold text-xs text-emerald-950">--:--</span></div>
+            <div id="box-dzuhur" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Dzuhur</span><span id="sholat-dzuhur" class="font-bold text-xs text-emerald-950">--:--</span></div>
+            <div id="box-ashar" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Ashar</span><span id="sholat-ashar" class="font-bold text-xs text-emerald-950">--:--</span></div>
+            <div id="box-maghrib" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Maghrib</span><span id="sholat-maghrib" class="font-bold text-xs text-emerald-950">--:--</span></div>
+            <div id="box-isya" class="bg-emerald-50 p-1 rounded transition-all duration-300"><span class="block text-[9px] text-gray-500">Isya</span><span id="sholat-isya" class="font-bold text-xs text-emerald-950">--:--</span></div>
         </div>
-    </div>
-    
-    <!-- BAGIAN KANAN: Tombol Pengumuman & Rute Masjid -->
-    <div class="flex flex-col gap-2 shrink-0">
-        <button onclick="bukaModalPengumuman()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold w-20 py-2 rounded-xl shadow flex flex-col items-center justify-center gap-2 transition transform active:scale-95">
-            <span id="badge-pengumuman" class="hidden w-1.5 h-1.5 bg-red-700 rounded-full animate-ping"></span>
-            <span class="text-[10px] leading-tight">Pengumuman & Informasi</span>
+    </div>   
+
+    <!-- EMPAT TOMBOL UTAMA SEJAJAR (Pengumuman, Bantuan Duafa, Infaq/Donasi, Rute Masjid) -->
+    <div class="grid grid-cols-4 gap-1.5 w-full">
+        <button onclick="bukaModalPengumuman()" class="bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-bold py-2 px-1 rounded-xl shadow flex flex-col items-center justify-center gap-1 transition transform active:scale-95">
+            <span id="badge-pengumuman" class="hidden w-2 h-2 bg-red-700 rounded-full animate-ping shrink-0 mb-0.5"></span>
+            <span class="text-[11px] text-center leading-tight">Pengumuman</span>
         </button>
 
-        <button onclick="bukaRuteKeMasjid()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold w-20 py-1 rounded-xl shadow flex flex-col items-center justify-center gap-1 transition transform active:scale-95">
-            <span class="text-base">🗺️</span>
-            <span class="text-[10px] leading-tight">Rute Masjid</span>
+        <button onclick="bukaModalDuafa()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold py-2 px-1 rounded-xl shadow flex flex-col items-center justify-center gap-1 transition transform active:scale-95">
+            <span class="text-xs text-center leading-tight">🤲<br>Bantuan Duafa</span>
+        </button>
+
+        <button onclick="bukaModalDonasi()" class="bg-amber-600 hover:bg-amber-700 text-white text-[11px] font-bold py-2 px-1 rounded-xl shadow flex flex-col items-center justify-center gap-1 transition transform active:scale-95">
+            <span class="text-xs text-center leading-tight">🤝<br>Infaq Donasi</span>
+        </button>
+
+        <button onclick="bukaRuteKeMasjid()" class="bg-emerald-700 hover:bg-emerald-800 text-white text-[11px] font-bold py-2 px-1 rounded-xl shadow flex flex-col items-center justify-center gap-1 transition transform active:scale-95">
+            <span class="text-xs text-center leading-tight">🗺️<br>Rute Masjid</span>
         </button>
     </div>
-</div>   
 
         <!-- 2. RUNNING TEXT / MARQUEE UMUM -->
-        <div class="bg-emerald-900 text-emerald-100 text-xs py-2 px-4 rounded-xl overflow-hidden whitespace-nowrap shadow-inner border border-emerald-800 flex items-center gap-2">
+        <div class="bg-emerald-950/90 backdrop-blur-md text-emerald-100 text-xs py-2 px-4 rounded-xl overflow-hidden whitespace-nowrap shadow-md border border-emerald-900 flex items-center gap-2">
             <div class="overflow-hidden w-full relative">
                 <div class="animate-marquee font-medium inline-block" id="running-text-content">
-                    Selamat datang di Portal Jamaah Masjid AT-TAQWA Desa Buluh Manis  
+                    Selamat datang di Portal Jamaah Masjid AT-TAQWA Desa Buluh Manis | Data ini diperbarui secara berkala & transparan dari pengurus Masjid At-Taqwa 
                 </div>
             </div>
         </div>
 
         <!-- 3. SLIDER GAMBAR DOKUMENTASI KEGIATAN -->
         <div class="space-y-2">
-            <p class="text-xs font-semibold text-gold-500 uppercase tracking-wider text-center flex items-center justify-center gap-1.5">
+            <p class="text-xs font-semibold text-amber-300 uppercase tracking-wider text-center flex items-center justify-center gap-1.5 drop-shadow">
                 Dokumentasi Kegiatan Masjid at-taqwa
             </p>
-            <div class="relative rounded-xl overflow-hidden shadow-sm group border border-emerald-100 bg-gray-900 min-h-[200px] flex items-center justify-center">
+            <div class="relative rounded-xl overflow-hidden shadow-lg group border border-emerald-100/30 bg-gray-900 min-h-[200px] flex items-center justify-center">
                 <div id="login-slider" class="w-full h-full flex transition-transform duration-500 ease-in-out">
-                    <div class="min-w-full w-full flex items-center justify-center h-[200px] bg-emerald-950 text-emerald-400 text-xs">
+                    <div class="min-w-full w-full flex items-center justify-center h-[200px] bg-emerald-950 text-emerald-300 text-xs">
                         Memuat foto kegiatan dari sistem...
                     </div>
                 </div>
@@ -174,8 +141,8 @@
         </div>
 
         <!-- 4. AGENDA KEGIATAN MASJID -->
-        <div id="sec-agenda" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hidden">
-            <div class="bg-emerald-700 text-white p-3 flex items-center space-x-2">
+        <div id="sec-agenda" class="bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-gray-200 overflow-hidden hidden">
+            <div class="bg-emerald-800 text-white p-3 flex items-center space-x-2">
                 <span class="text-lg">📅</span>
                 <h3 class="font-bold text-sm tracking-wide">Agenda & Jadwal Kegiatan</h3>
             </div>
@@ -184,55 +151,10 @@
             </div>
         </div>
 
-<!-- HIMBAUAN DONASI -->
-<div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-400 rounded-xl shadow-sm overflow-hidden">
-    <button onclick="toggleSection('konten-himbauan', 'ikon-himbauan')" class="w-full p-3 flex items-center justify-between text-left hover:bg-amber-100 transition">
-        <div class="flex items-center space-x-2 text-amber-900">
-            <span class="text-xl">🤝</span>
-            <h3 class="font-bold text-sm uppercase tracking-wide">KLIK UNTUK Infaq / Donasi</h3>
-        </div>
-        <span id="ikon-himbauan" class="text-xs transition-transform duration-200">▼</span>
-    </button>
-
-    <div id="konten-himbauan" class="border-t border-amber-200 p-4 hidden space-y-3">
-        <p class="text-xs text-amber-950 leading-relaxed text-justify">
-            Bagi Bapak/Ibu Jamaah dan Donatur yang ingin menyalurkan Infaq Pembangunan Masjid, sedekah Anak Yatim, Donasi untuk Operasional Masjid AT-TAQWA dan lainnya, dapat mentransfer melalui rekening resmi berikut:
-        </p>
-        <div class="bg-white p-3 rounded-lg border border-amber-300 shadow-inner space-y-1.5 text-xs">
-            <div class="flex justify-between items-center text-gray-600">
-                <span class="font-semibold text-emerald-800">Bank BRKSyariah</span>
-                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">Resmi DKM</span>
-            </div>
-            <div class="text-gray-900 font-mono font-extrabold text-sm tracking-wider flex items-center justify-between">
-                <span>198-43-00810</span>
-                <button onclick="salinRekening('198-43-00810')" class="text-[10px] text-amber-700 bg-amber-100 hover:bg-amber-200 px-2 py-0.5 rounded font-sans transition">
-                    📋 Salin
-                </button>
-            </div>
-            <p class="text-[11px] text-gray-500 font-medium">a.n. <strong class="text-gray-800">MASJID AT TAQWA</strong></p>
-        </div>
-        <div class="pt-1">
-            <a id="btn-wa-ketua" href="#" target="_blank" onclick="kirimKonfirmasiWA(event)" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-lg shadow flex items-center justify-center space-x-2 text-xs transition transform active:scale-95">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                </svg>
-                <span>Konfirmasi Infaq via WA Ketua DKM</span>
-            </a>
-        </div>
-        <div class="text-[12px] text-amber-900 bg-amber-100/60 p-2.5 rounded-lg border border-amber-200 space-y-1">
-            <p class="font-semibold text-amber-950">💡 Catatan Konfirmasi Donasi:</p>
-            <p class="text-gray-700 leading-snug text-justify">
-                &bull; Setelah melakukan transfer, mohon klik tombol hijau di atas untuk mengirimkan bukti transfer kepada Ketua DKM agar tercatat transparan dalam rekapitulasi kas masjid.<br>
-                &bull; Jazakumullah khairan katsiran kepada para jamaah dan donatur. Semoga diberkahi serta dilipatgandakan oleh Allah SWT. Aamiin.
-            </p>
-        </div>
-    </div>
-</div>
-
         <!-- 5. SALDO KAS & REKAPITULASI KEUANGAN -->
-        <div id="kas-summary-card" class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 space-y-2.5 shadow-sm">
+        <div id="kas-summary-card" class="bg-emerald-50/95 backdrop-blur-md border border-emerald-200 rounded-xl p-4 space-y-2.5 shadow-lg">
             <div class="flex justify-between items-center border-b border-emerald-200 pb-2">
-                <h4 class="font-bold text-xs text-emerald-900 uppercase tracking-wider">📊 Rekapitulasi & Saldo Kas Masjid</h4>
+                <h4 class="font-bold text-xs text-emerald-950 uppercase tracking-wider">📊 Rekapitulasi & Saldo Kas Masjid</h4>
                 <!-- Tanggal Cetak Otomatis -->
                 <span class="text-[11px] text-gray-500 font-medium">
                     Tanggal: <script>document.write(new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }));</script>
@@ -248,13 +170,13 @@
                     <span class="text-gray-600 font-medium">(-) Total Dana Keluar</span>
                     <span id="sum-keluar" class="font-bold text-red-600">Rp 0</span>
                 </div>
-                <div class="flex justify-between items-center bg-emerald-700 text-white p-2.5 rounded-lg shadow-sm">
+                <div class="flex justify-between items-center bg-emerald-900 text-white p-2.5 rounded-lg shadow-sm">
                     <span class="font-bold">(=) Saldo Akhir Kas</span>
                     <span id="sum-saldo" class="font-extrabold text-sm text-gold">Rp 0</span>
                 </div>
                              
             <div id="sec-jenis-kas-wrapper" class="hidden pt-1">
-                <button onclick="toggleSection('rincian-jenis-kas', 'btn-icon-jenis')" class="w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 text-xs font-semibold py-2 px-3 rounded-lg flex items-center justify-between transition">
+                <button onclick="toggleSection('rincian-jenis-kas', 'btn-icon-jenis')" class="w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-950 text-xs font-semibold py-2 px-3 rounded-lg flex items-center justify-between transition">
                     <span>📋 Lihat Rincian Per Jenis Kas</span>
                     <span id="btn-icon-jenis" class="text-xs transition-transform duration-200">▼</span>
                 </button>
@@ -263,8 +185,8 @@
         </div>
 
         <!-- 6. RINCIAN DANA MASUK -->
-        <div id="sec-masuk" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hidden">
-            <button onclick="toggleSection('content-masuk', 'btn-icon-masuk'); toggleSection('btn-cetak-masuk', null);" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white p-3 flex items-center justify-between transition text-left">
+        <div id="sec-masuk" class="bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-gray-200 overflow-hidden hidden">
+            <button onclick="toggleSection('content-masuk', 'btn-icon-masuk'); toggleSection('btn-cetak-masuk', null);" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white p-3 flex items-center justify-between transition text-left">
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">📥</span>
                     <h3 class="font-bold text-sm tracking-wide">Rincian Dana Masuk</h3>
@@ -274,17 +196,17 @@
             <div id="content-masuk" class="overflow-x-auto p-3 hidden border-t border-gray-100">
                 Memuat data dana masuk...
             </div>
-            <!-- TOMBOL CETAK (AWALNYA TERSEMBUNYI, IKUT TERBUKA SAAT AKORDION DIBUKA) -->
+            <!-- TOMBOL CETAK -->
             <div id="btn-cetak-masuk" class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end hidden">
-                <button onclick="cetakData('masuk')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-1.5 px-3 rounded-lg text-xs flex items-center gap-1.5 transition shadow-sm">
+                <button onclick="cetakData('masuk')" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-1.5 px-3 rounded-lg text-xs flex items-center gap-1.5 transition shadow-sm">
                     <span>🖨️</span> Cetak Dana Masuk
                 </button>
             </div>
         </div>
 
         <!-- 7. RINCIAN DANA KELUAR -->
-        <div id="sec-keluar" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hidden">
-            <button onclick="toggleSection('content-keluar', 'btn-icon-keluar'); toggleSection('btn-cetak-keluar', null);" class="w-full bg-emerald-700 hover:bg-red-800 text-white p-3 flex items-center justify-between transition text-left">
+        <div id="sec-keluar" class="bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-gray-200 overflow-hidden hidden">
+            <button onclick="toggleSection('content-keluar', 'btn-icon-keluar'); toggleSection('btn-cetak-keluar', null);" class="w-full bg-emerald-800 hover:bg-red-800 text-white p-3 flex items-center justify-between transition text-left">
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">📤</span>
                     <h3 class="font-bold text-sm tracking-wide">Rincian Dana Keluar</h3>
@@ -294,7 +216,7 @@
             <div id="content-keluar" class="overflow-x-auto p-3 hidden border-t border-gray-100">
                 Memuat data dana keluar...
             </div>
-            <!-- TOMBOL CETAK (AWALNYA TERSEMBUNYI, IKUT TERBUKA SAAT AKORDION DIBUKA) -->
+            <!-- TOMBOL CETAK -->
             <div id="btn-cetak-keluar" class="p-3 bg-gray-50 border-t border-gray-100 flex justify-end hidden">
                 <button onclick="cetakData('keluar')" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-1.5 px-3 rounded-lg text-xs flex items-center gap-1.5 transition shadow-sm">
                     <span>🖨️</span> Cetak Dana Keluar
@@ -303,48 +225,42 @@
         </div>
 
  <!-- Tombol Cetak Laporan Keuangan Keseluruhan & Tanda Tangan -->
-                
-                    <button onclick="cetakLaporanKas()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition shadow-sm">
-                        <span>🖨️</span> Cetak Laporan Keuangan & Tanda Tangan Pengurus
-                    </button>
-                </div>
-            </div>
+    <button onclick="cetakLaporanKas()" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-semibold py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition shadow-md">
+        <span>🖨️</span> Cetak Laporan Keuangan & Tanda Tangan Pengurus
+    </button>
 
         <!-- 8. KONTAK DKM & PENGURUS -->
-        <div id="sec-kontak" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hidden">
-            <div class="bg-emerald-700 text-white p-3 flex items-center space-x-2">
+        <div id="sec-kontak" class="bg-white/95 backdrop-blur-md rounded-xl shadow-lg border border-gray-200 overflow-hidden hidden">
+            <div class="bg-emerald-800 text-white p-3 flex items-center space-x-2">
                 <span class="text-lg">📞</span>
                 <h3 class="font-bold text-sm tracking-wide">KONTAK DKM MASJID AT-TAQWA</h3>
             </div>
             <div id="content-kontak" class="p-4 text-xs leading-relaxed text-gray-700 whitespace-pre-line">
                 Memuat informasi kontak DKM...
             </div>
-<!-- Tombol Kontak DKM (Gaya seperti tombol Pengumuman) -->
-<div class="mt-3">
-    <button onclick="bukaStrukturDKM()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition shadow-sm">
-        <span> Lihat Struktur DKM Masjid AT-TAQWA</span>
-    </button>
-</div>
-
-<!-- Modal / Popup Struktur DKM -->
-<div id="modal-struktur-dkm" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-lg max-w-lg w-full overflow-hidden">
-        <!-- Header Modal -->
-        <div class="bg-emerald-700 text-white p-3 flex justify-between items-center">
-            <h3 class="font-bold text-sm">👥 Struktur Pengurus DKM</h3>
-            <button onclick="tutupStrukturDKM()" class="text-white hover:text-gray-200 font-bold text-base">&times;</button>
-        </div>
-        <!-- Body Modal (Tempat data Spreadsheet dimuat) -->
-        <div id="konten-struktur-dkm" class="p-4 max-h-96 overflow-y-auto text-xs space-y-2">
-            <p class="text-center text-gray-500">Memuat data struktur DKM...</p>
-        </div>
-        <!-- Footer Modal -->
-        <div class="bg-gray-50 p-3 text-right border-t border-gray-100">
-            <button onclick="tutupStrukturDKM()" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold">Tutup</button>
-        </div>
-    </div>
         </div>
 
+        <div class="mt-3 no-print">
+            <button onclick="bukaStrukturDKM()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2 rounded-lg text-xs flex items-center justify-center gap-2 transition shadow-sm">
+                <span>Lihat Struktur DKM Masjid AT-TAQWA</span>
+            </button>
+        </div>
+
+        <!-- Modal / Popup Struktur DKM -->
+        <div id="modal-struktur-dkm" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-xl shadow-xl max-w-lg w-full overflow-hidden">
+                <div class="bg-emerald-800 text-white p-3 flex justify-between items-center">
+                    <h3 class="font-bold text-sm">👥 Struktur Pengurus DKM</h3>
+                    <button onclick="tutupStrukturDKM()" class="text-white hover:text-gray-200 font-bold text-base">&times;</button>
+                </div>
+                <div id="konten-struktur-dkm" class="p-4 max-h-96 overflow-y-auto text-xs space-y-2">
+                    <p class="text-center text-gray-500">Memuat data struktur DKM...</p>
+                </div>
+                <div class="bg-gray-50 p-3 text-right border-t border-gray-100">
+                    <button onclick="tutupStrukturDKM()" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold">Tutup</button>
+                </div>
+            </div>
+        </div>
 
         <!-- BANTUAN PERINGATAN GAGAL -->
         <div id="error-status" class="hidden bg-red-50 text-red-600 p-4 rounded-xl text-xs text-center border border-red-200 space-y-2">
@@ -353,12 +269,6 @@
             <button onclick="inisialisasiAplikasi()" class="mt-2 bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-1.5 rounded-lg text-xs transition">
                 🔄 Coba Muat Ulang
             </button>
-        </div>
-
-        <div class="p-3 bg-emerald-50/60 border border-emerald-100 rounded-xl text-center">
-            <p class="text-[11px] text-emerald-800 font-medium">
-                ✨ Data ini diperbarui secara berkala & transparan dari sistem pengurus Masjid At-Taqwa.
-            </p>
         </div>
     </main>
 
@@ -378,13 +288,96 @@
                 </div>
             </div>
             <div class="bg-gray-50 px-4 py-2.5 text-right border-t border-gray-100">
-                <button onclick="tutupModalPengumuman()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-1.5 rounded-lg text-xs transition">Tutup</button>
+                <button onclick="tutupModalPengumuman()" class="bg-emerald-800 hover:bg-emerald-900 text-white font-semibold px-4 py-1.5 rounded-lg text-xs transition">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL BANTUAN DUFAFA ================= -->
+    <div id="modal-duafa" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden transition-opacity backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden transform transition-all border border-emerald-200">
+            <div class="bg-emerald-800 text-white px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">🤲</span>
+                    <h3 class="font-bold text-sm">Informasi & Penyaluran Kaum Duafa</h3>
+                </div>
+                <button onclick="tutupModalDuafa()" class="text-white/80 hover:text-white text-lg font-bold p-1">&times;</button>
+            </div>
+            <div class="p-4 max-h-[60vh] overflow-y-auto space-y-3 text-xs text-gray-700">
+                <p class="leading-relaxed">
+                    Program layanan khusus bagi kaum duafa, fakir miskin, serta penyaluran bantuan sosial/sembako dari DKM Masjid At-Taqwa Desa Buluh Manis.
+                </p>
+                <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-200 space-y-2">
+                    <p class="font-bold text-emerald-900">📋 Syarat & Ketentuan Penerima Bantuan:</p>
+                    <p class="text-gray-600 leading-normal">
+                        1. Terdaftar sebagai warga domisili Desa Buluh Manis dan menjadi bagian jamaah Masjid At-Taqwa.<br>
+                        2. Membawa fotokopi KTP / Kartu Keluarga (KK).<br>
+                        3. Pengajuan dapat langsung dikoordinasikan melalui pengurus RT/RW setempat atau pengurus DKM.
+                    </p>
+                </div>
+                <div class="pt-2">
+                    <a href="https://wa.me/6285374451435?text=Assalamu'alaikum,%20saya%20ingin%20menanyakan%20informasi%20terkait%20program%20bantuan%20kaum%20duafa%20di%20Masjid%20At-Taqwa." target="_blank" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 px-4 rounded-lg shadow flex items-center justify-center space-x-2 text-xs transition">
+                        <span>💬 Hubungi Pengurus via WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-2.5 text-right border-t border-gray-100">
+                <button onclick="tutupModalDuafa()" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold px-4 py-1.5 rounded-lg text-xs transition">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL INFAQ / DONASI ================= -->
+    <div id="modal-donasi" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden transition-opacity backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden transform transition-all border border-amber-300">
+            <div class="bg-amber-600 text-white px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">🤝</span>
+                    <h3 class="font-bold text-sm">Informasi Infaq & Donasi Masjid</h3>
+                </div>
+                <button onclick="tutupModalDonasi()" class="text-white/80 hover:text-white text-lg font-bold p-1">&times;</button>
+            </div>
+            <div class="p-4 max-h-[70vh] overflow-y-auto space-y-3 text-xs text-gray-700">
+                <p class="text-xs text-amber-950 leading-relaxed text-justify">
+                    Bagi Bapak/Ibu Jamaah dan Donatur yang ingin menyalurkan Infaq Pembangunan Masjid, sedekah Anak Yatim, Donasi untuk Operasional Masjid AT-TAQWA dan lainnya, dapat mentransfer melalui rekening resmi berikut:
+                </p>
+                <div class="bg-amber-50/60 p-3 rounded-lg border border-amber-300 shadow-inner space-y-1.5 text-xs">
+                    <div class="flex justify-between items-center text-gray-600">
+                        <span class="font-semibold text-emerald-900">Bank BRKSyariah</span>
+                        <span class="text-[10px] bg-emerald-100 text-emerald-900 font-bold px-1.5 py-0.5 rounded">Resmi DKM</span>
+                    </div>
+                    <div class="text-gray-900 font-mono font-extrabold text-sm tracking-wider flex items-center justify-between">
+                        <span>198-43-00810</span>
+                        <button onclick="salinRekening('198-43-00810')" class="text-[10px] text-amber-700 bg-amber-100 hover:bg-amber-200 px-2 py-0.5 rounded font-sans transition">
+                            📋 Salin
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-gray-500 font-medium">a.n. <strong class="text-gray-800">MASJID AT TAQWA</strong></p>
+                </div>
+                <div class="pt-1">
+                    <a id="btn-wa-ketua" href="#" target="_blank" onclick="kirimKonfirmasiWA(event)" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-4 rounded-lg shadow flex items-center justify-center space-x-2 text-xs transition transform active:scale-95">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                        </svg>
+                        <span>Konfirmasi Infaq via WA Ketua DKM</span>
+                    </a>
+                </div>
+                <div class="text-[11px] text-amber-900 bg-amber-50 p-2.5 rounded-lg border border-amber-200 space-y-1">
+                    <p class="font-semibold text-amber-950">💡 Catatan Konfirmasi Donasi:</p>
+                    <p class="text-gray-700 leading-snug text-justify">
+                        &bull; Setelah melakukan transfer, mohon klik tombol hijau di atas untuk mengirimkan bukti transfer kepada Ketua DKM agar tercatat transparan dalam rekapitulasi kas masjid.<br>
+                        &bull; Jazakumullah khairan katsiran kepada para jamaah dan donatur. Semoga diberkahi serta dilipatgandakan oleh Allah SWT. Aamiin.
+                    </p>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-2.5 text-right border-t border-gray-100">
+                <button onclick="tutupModalDonasi()" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold px-4 py-1.5 rounded-lg text-xs transition">Tutup</button>
             </div>
         </div>
     </div>
 
     <!-- ================= FOOTER ================= -->
-    <footer class="text-center py-4 text-xs text-gray-400 border-t bg-white mt-4">
+    <footer class="text-center py-4 text-xs text-emerald-200 border-t border-emerald-900/50 bg-emerald-950/80 backdrop-blur-md mt-4 relative z-10">
         &copy; 2026 Portal Jamaah Masjid AT-TAQWA &bull; Wisno Saputra &bull; Desa Buluh Manis
     </footer>
 
@@ -397,7 +390,7 @@
         let sliderDataCache = [];
         let currentSlide = 0;
         let sliderTimer = null;
-        let jadwalSholatCache = {}; // Menyimpan jadwal sholat untuk pengecekan highlight
+        let jadwalSholatCache = {};
 
         const defaultSlides = [
             { judul: "-", keterangan: "-", foto: "-" },
@@ -425,7 +418,6 @@
                     elJam.innerText = `${jam}:${menit}:${detik}`;
                 }
 
-                // Cek dan jalankan highlight jadwal sholat setiap detik
                 perbaruiHighlightSholat(jam, menit);
             };
             
@@ -445,7 +437,6 @@
                 if (result && result.code === 200 && result.data && result.data.timings) {
                     const timings = result.data.timings;
                     
-                    // Simpan ke cache agar bisa diakses fungsi highlight
                     jadwalSholatCache = {
                         Subuh: timings.Fajr,
                         Dzuhur: timings.Dhuhr,
@@ -473,7 +464,6 @@
             }
         }
 
-        // FUNGSI HIGHLIGHT JADWAL SHOLAT BERDASARKAN WAKTU SEKARANG
         function perbaruiHighlightSholat(jamStr, menitStr) {
             if (!jadwalSholatCache.Subuh) return;
 
@@ -489,18 +479,16 @@
             const dzuhur = keMenit(jadwalSholatCache.Dzuhur);
             const ashar = keMenit(jadwalSholatCache.Ashar);
             const maghrib = keMenit(jadwalSholatCache.Maghrib);
-            const isya = keMenit(jadwalSholatCache.Isya);
+            const isya = keMenit(jadwalSholatCache.Isha);
 
-            // Daftar kotak sholat beserta ID span teks di dalamnya
             const daftarSholat = [
-    { boxId: 'box-subuh', timeId: 'sholat-subuh' },
-    { boxId: 'box-dzuhur', timeId: 'sholat-dzuhur' },
-    { boxId: 'box-ashar', timeId: 'sholat-ashar' },
-    { boxId: 'box-maghrib', timeId: 'sholat-maghrib' },
-    { boxId: 'box-isya', timeId: 'sholat-isya' }
-];
+                { boxId: 'box-subuh', timeId: 'sholat-subuh' },
+                { boxId: 'box-dzuhur', timeId: 'sholat-dzuhur' },
+                { boxId: 'box-ashar', timeId: 'sholat-ashar' },
+                { boxId: 'box-maghrib', timeId: 'sholat-maghrib' },
+                { boxId: 'box-isya', timeId: 'sholat-isya' }
+            ];
 
-            // Reset semua kotak kembali ke tampilan normal (emerald-50)
             daftarSholat.forEach(item => {
                 const el = document.getElementById(item.boxId);
                 if (el) {
@@ -508,7 +496,6 @@
                 }
             });
 
-            // Tentukan sholat mana yang sedang aktif
             let targetBoxId = "";
             if (waktuSekarangMenit >= subuh && waktuSekarangMenit < dzuhur) {
                 targetBoxId = "box-subuh";
@@ -522,7 +509,6 @@
                 targetBoxId = "box-isya";
             }
 
-            // Terapkan highlight HANYA pada latar belakang kotak agar struktur teks aman dan rapi
             if (targetBoxId) {
                 const activeBox = document.getElementById(targetBoxId);
                 if (activeBox) {
@@ -540,8 +526,7 @@
                 `*Rincian Donasi:*\n` +
                 `• Nama Hamba Allah / Donatur: \n` +
                 `• Nominal Transfer: Rp \n` +
-                `• Tanggal Transfer: \n` +
-                `• Peruntukan: (Infaq Operasional / Pembangunan / Yatim)\n\n` +
+                `• Peruntukan: (Infaq Operasional / Pembangunan / Yatim )\n\n` +
                 `*(Mohon lampirkan foto/screenshot bukti transfer)*\n\n` +
                 `Jazakallahu Khairan Khasiran.`;
 
@@ -575,6 +560,20 @@
             document.getElementById('modal-pengumuman').classList.add('hidden');
         }
 
+        function bukaModalDuafa() {
+            document.getElementById('modal-duafa').classList.remove('hidden');
+        }
+        function tutupModalDuafa() {
+            document.getElementById('modal-duafa').classList.add('hidden');
+        }
+
+        function bukaModalDonasi() {
+            document.getElementById('modal-donasi').classList.remove('hidden');
+        }
+        function tutupModalDonasi() {
+            document.getElementById('modal-donasi').classList.add('hidden');
+        }
+
         function parseImageUrl(url) {
             if (!url || typeof url !== 'string' || !url.trim()) {
                 return { url: "", driveId: null };
@@ -594,7 +593,6 @@
                 const altUrls = [
                     `https://lh3.googleusercontent.com/d/${driveId}`,
                     `https://drive.google.com/uc?export=view&id=${driveId}`,
-
                 ];
                 if (step < altUrls.length) {
                     img.setAttribute('data-step', step + 1);
@@ -748,7 +746,7 @@
 
             if (Object.keys(rincianKas).length > 0) {
                 document.getElementById('sec-jenis-kas-wrapper').classList.remove('hidden');
-                let htmlTabelJenis = `<div class="overflow-x-auto bg-white rounded-lg border border-emerald-100 p-2"><table class="w-full text-left border-collapse text-[11px]"><thead><tr class="bg-emerald-100 text-emerald-900 border-b"><th class="p-1.5">Jenis Kas</th><th class="p-1.5 text-right">Masuk</th><th class="p-1.5 text-right">Keluar</th><th class="p-1.5 text-right">Saldo</th></tr></thead><tbody class="divide-y divide-gray-200">`;
+                let htmlTabelJenis = `<div class="overflow-x-auto bg-white rounded-lg border border-emerald-100 p-2"><table class="w-full text-left border-collapse text-[11px]"><thead><tr class="bg-emerald-100 text-emerald-950 border-b"><th class="p-1.5">Jenis Kas</th><th class="p-1.5 text-right">Masuk</th><th class="p-1.5 text-right">Keluar</th><th class="p-1.5 text-right">Saldo</th></tr></thead><tbody class="divide-y divide-gray-200">`;
                 for (let kat in rincianKas) {
                     let m = rincianKas[kat].masuk;
                     let k = rincianKas[kat].keluar;
@@ -798,7 +796,7 @@
                 } 
                 else if (t.includes('masuk') || t.includes('pemasukan') || (t.includes('kas') && !t.includes('keluar'))) {
                     let barisData = dataMasterTransaksi.split('\n');
-                    let htmlMasuk = `<table class="w-full text-left border-collapse text-xs"><thead><tr class="bg-emerald-100 text-emerald-900 border-b"><th class="p-2">Sumber</th><th class="p-2">Keterangan</th><th class="p-2 text-right">Jumlah</th></tr></thead><tbody class="divide-y divide-gray-200">`;
+                    let htmlMasuk = `<table class="w-full text-left border-collapse text-xs"><thead><tr class="bg-emerald-100 text-emerald-950 border-b"><th class="p-2">Sumber</th><th class="p-2">Keterangan</th><th class="p-2 text-right">Jumlah</th></tr></thead><tbody class="divide-y divide-gray-200">`;
                     let totalMasuk = 0;
                     barisData.forEach(baris => {
                         if (baris.trim() !== "") {
@@ -846,195 +844,179 @@
                 }
             });
         }
-function cetakData(jenis) {
-    const isMasuk = jenis === 'masuk';
-    const judulLaporan = isMasuk ? "LAPORAN DANA MASUK (INFAQ / DONASI)" : "LAPORAN DANA KELUAR (OPERASIONAL)";
-    const kontenHtml = document.getElementById(isMasuk ? 'content-masuk' : 'content-keluar').innerHTML;
-    const warnaTema = isMasuk ? "#065f46" : "#dc2626"; // Hijau untuk masuk, Merah untuk keluar
 
-    const printWindow = window.open('', '_blank', 'width=800,height=600');
-    
-    printWindow.document.write(`
-        <html>
-        <head>
-            <!-- Mengosongkan title agar tidak muncul teks di bagian atas halaman cetak/browser -->
-            <title></title>
-            <style>
-                body { font-family: Arial, sans-serif; padding: 20px; color: #333; margin: 0; }
-                h2, h3 { text-align: center; margin: 5px 0; }
-                p { margin: 4px 0; }
-                .header { text-align: center; border-bottom: 2px solid ${warnaTema}; padding-bottom: 10px; margin-bottom: 20px; }
-                .info { margin-bottom: 15px; font-size: 13px; }
-                table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
-                th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
-                th { background-color: ${warnaTema}; color: white; }
-                
-                /* Styling Tanda Tangan */
-                .signature-section {
-                    margin-top: 50px;
-                    display: flex;
-                    justify-content: space-between;
-                    page-break-inside: avoid;
-                }
-                .signature-box {
-                    text-align: center;
-                    width: 30%;
-                    font-size: 12px;
-                }
-                .signature-space {
-                    height: 70px; /* Ruang kosong untuk tanda tangan fisik */
-                }
-            </style>
-        </head>
-        <body>
+        function cetakData(jenis) {
+            const isMasuk = jenis === 'masuk';
+            const judulLaporan = isMasuk ? "LAPORAN DANA MASUK (INFAQ / DONASI)" : "LAPORAN DANA KELUAR (OPERASIONAL)";
+            const kontenHtml = document.getElementById(isMasuk ? 'content-masuk' : 'content-keluar').innerHTML;
+            const warnaTema = isMasuk ? "#065f46" : "#dc2626";
 
-            <div class="header" style="text-align: center;">
-    <h1 class="font-extrabold text-xl sm:text-2xl tracking-wider uppercase text-gold" style="margin-bottom: 2px;">PENGURUS MASJID AT-TAQWA</h1>
-    <p style="margin: 0 0 2px 0; font-size: 12px;">DESA BULUH MANIS KECAMATAN BATHIN SOLAPAN KABUPATEN BENGKALIS</p>
-    <p style="margin: 0 0 5px 0; font-size: 12px;">Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
-    <h3 style="margin: 0; font-weight: bold; font-size: 14px;">${judulLaporan}</h3>
-</div>
+            const printWindow = window.open('', '_blank', 'width=800,height=600');
             
-            <div class="info">
-                <p><strong>Tanggal Cetak:</strong> ${new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-            </div>
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title></title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; color: #333; margin: 0; }
+                        h2, h3 { text-align: center; margin: 5px 0; }
+                        p { margin: 4px 0; }
+                        .header { text-align: center; border-bottom: 2px solid ${warnaTema}; padding-bottom: 10px; margin-bottom: 20px; }
+                        .info { margin-bottom: 15px; font-size: 13px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+                        th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
+                        th { background-color: ${warnaTema}; color: white; }
+                        .signature-section {
+                            margin-top: 50px;
+                            display: flex;
+                            justify-content: space-between;
+                            page-break-inside: avoid;
+                        }
+                        .signature-box {
+                            text-align: center;
+                            width: 30%;
+                            font-size: 12px;
+                        }
+                        .signature-space {
+                            height: 70px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header" style="text-align: center;">
+                        <h1 style="margin: 0; font-size: 18px; font-weight: bold;">PENGURUS MASJID AT-TAQWA</h1>
+                        <p style="margin: 2px 0; font-size: 12px;">DESA BULUH MANIS KECAMATAN BATHIN SOLAPAN KABUPATEN BENGKALIS</p>
+                        <p style="margin: 0 0 5px 0; font-size: 11px;">Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
+                        <h3 style="margin-top: 5px; font-size: 14px;">${judulLaporan}</h3>
+                    </div>
+                    
+                    <div class="info">
+                        <p><strong>Tanggal Cetak:</strong> ${new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    </div>
+                    
+                    <div>${kontenHtml}</div>
+
+                    <div class="signature-section">
+                        <div class="signature-box">
+                            <p>Mengetahui,<br><strong>Ketua DKM</strong></p>
+                            <div class="signature-space"></div>
+                            <p><strong>( WISNO SAPUTRA )</strong></p>
+                        </div>
+                        <div class="signature-box">
+                            <p><br><strong>Sekretaris</strong></p>
+                            <div class="signature-space"></div>
+                            <p><strong>( HADI SAPUTRA )</strong></p>
+                        </div>
+                        <div class="signature-box">
+                            <p><br><strong>Bendahara</strong></p>
+                            <div class="signature-space"></div>
+                            <p><strong>( SURIADI )</strong></p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 10px; font-size: 11px; color: #555; text-align: center; font-style: italic;">
+                        <p>Laporan ini dibuat secara transparan dan akuntabel untuk jamaah Masjid At-Taqwa serta pihak-pihak yang berkepentingan.</p>
+                    </div>
+                </body>
+                </html>
+            `);
             
-            <div>${kontenHtml}</div>
+            printWindow.document.close();
+            printWindow.focus();
+            
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
+        }
 
-            <!-- Kolom Tanda Tangan Pengurus -->
-            <div class="signature-section">
-                <div class="signature-box">
-                    <p>Mengetahui,<br><strong>Ketua DKM</strong></p>
-                    <div class="signature-space"></div>
-                    <p><strong>( WISNO SAPUTRA )</strong></p>
+        function cetakLaporanKas() {
+            const originalContent = document.body.innerHTML;
+            const ringkasanKas = document.getElementById('kas-summary-card') ? document.getElementById('kas-summary-card').innerHTML : '';
+            const summaryMasuk = document.getElementById('content-masuk') ? document.getElementById('content-masuk').innerHTML : '';
+            const summaryKeluar = document.getElementById('content-keluar') ? document.getElementById('content-keluar').innerHTML : '';
+
+            document.body.innerHTML = `
+                <div id="print-area" style="font-family: Arial, sans-serif; padding: 20px;">
+                    <div style="text-align: center; border-bottom: 2px solid #000; margin-bottom: 20px; padding-bottom: 10px;">
+                        <h3 style="margin: 0; font-size: 14px;">LAPORAN KEUANGAN KAS MASJID</h3>
+                        <h1 style="margin: 2px 0; font-size: 18px; font-weight: bold;">PENGURUS MASJID AT-TAQWA</h1>
+                        <p style="margin: 2px 0; font-size: 12px;">DESA BULUH MANIS KECAMATAN BATHIN SOLAPAN KABUPATEN BENGKALIS</p>
+                        <p style="margin: 0; font-size: 11px;">Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
+                    </div>
+                    <div id="temp-ringkasan">${ringkasanKas}</div>
+                    <h3 style="margin-top: 15px;">Rincian Dana Masuk</h3>
+                    <div>${summaryMasuk}</div>
+                    <h3 style="margin-top: 15px;">Rincian Dana Keluar</h3>
+                    <div>${summaryKeluar}</div>
+                    <div style="margin-top: 50px; display: flex; justify-content: space-between; page-break-inside: avoid;">
+                        <div style="text-align: center; width: 30%; font-size: 12px;"><p>Mengetahui,<br>Ketua DKM</p><br><br><br><p><strong>( WISNO SAPUTRA )</strong></p></div>
+                        <div style="text-align: center; width: 30%; font-size: 12px;"><p><br>Sekretaris</p><br><br><br><p><strong>( HADI SAPUTRA )</strong></p></div>
+                        <div style="text-align: center; width: 30%; font-size: 12px;"><p><br>Bendahara</p><br><br><br><p><strong>( SURIADI )</strong></p></div>
+                    </div>
+                    <div style="margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 10px; font-size: 11px; color: #555; text-align: center; font-style: italic;">
+                        <p>Laporan ini dibuat secara transparan dan akuntabel untuk jamaah Masjid At-Taqwa serta pihak-pihak yang berkepentingan.</p>
+                    </div>
                 </div>
-                <div class="signature-box">
-                    <p><br><strong>Sekretaris</strong></p>
-                    <div class="signature-space"></div>
-                    <p><strong>( HADI SAPUTRA )</strong></p>
-                </div>
-                <div class="signature-box">
-                    <p><br><strong>Bendahara</strong></p>
-                    <div class="signature-space"></div>
-                    <p><strong>( SURIADI )</strong></p>
-                </div>
-            </div>
-<!-- 👉 MASUKKAN KODE CATATAN KAKI DI SINI (Tepat sebelum penutup print-area) -->
-    <div style="margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 10px; font-size: 15px; color: #555; text-align: center; font-style: italic;">
-        <p>Laporan ini dibuat secara transparan dan akuntabel untuk jamaah Masjid At-Taqwa serta pihak-pihak yang berkepentingan.</p>
-    </div>
+            `;
 
-        </body>
-        </html>
-    `);
-    
-    printWindow.document.close();
-    printWindow.focus();
-    
-    setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-    }, 500);
-}
-function cetakLaporanKas() {
-    // 1. Simpan konten asli body
-    const originalContent = document.body.innerHTML;
-
-    // 2. Ambil elemen ringkasan, masuk, dan keluar
-    const ringkasanKas = document.getElementById('kas-summary-card') ? document.getElementById('kas-summary-card').innerHTML : '';
-    const summaryMasuk = document.getElementById('content-masuk') ? document.getElementById('content-masuk').innerHTML : '';
-    const summaryKeluar = document.getElementById('content-keluar') ? document.getElementById('content-keluar').innerHTML : '';
-
-    // 3. Masukkan konten cetak ke body
-    document.body.innerHTML = `
-        <div id="print-area" style="font-family: Arial, sans-serif; padding: 20px;">
-            <div style="text-align: center; border-bottom: 2px solid #000; margin-bottom: 20px;">
-                <h3>LAPORAN KEUANGAN KAS MASJID</h3>
-                <h1 class="font-extrabold text-xl sm:text-2xl tracking-wider uppercase text-gold">PENGURUS MASJID AT-TAQWA</h1>
-		<p>DESA BULUH MANIS KECAMATAN BATHIN SOLAPAN KABUPATEN BENGKALIS<p>
-                <p>Jl. Lapangan Heli RT.03 RW.07 Desa Buluh Manis</p>
-
-            </div>
-            <div id="temp-ringkasan">${ringkasanKas}</div>
-            <h3>Rincian Dana Masuk</h3>
-            <div>${summaryMasuk}</div>
-            <h3>Rincian Dana Keluar</h3>
-            <div>${summaryKeluar}</div>
-            <div style="margin-top: 50px; display: flex; justify-content: space-between;">
-                <div style="text-align: center;"> <p>Mengetahui,<br>Ketua DKM</p><br><br><br><p><strong>( WISNO SAPUTRA )</strong></p> </div>
-                <div style="text-align: center;"> <p><br>Sekretaris</p><br><br><br><p><strong>( HADI SAPUTRA )</strong></p> </div>
-                <div style="text-align: center;"> <p><br>Bendahara</p><br><br><br><p><strong>( SURIADI )</strong></p> </div>
-            </div>
-<!-- 👉 MASUKKAN KODE CATATAN KAKI DI SINI (Tepat sebelum penutup print-area) -->
-    <div style="margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 10px; font-size: 15px; color: #555; text-align: center; font-style: italic;">
-        <p>Laporan ini dibuat secara transparan dan akuntabel untuk jamaah Masjid At-Taqwa serta pihak-pihak yang berkepentingan.</p>
-    </div>
-        </div>
-    `;
-
-    // 4. HAPUS PAKSA SEMUA TOMBOL DI DALAM AREA CETAK SECARA LANGSUNG
-    const printArea = document.getElementById('print-area');
-    if (printArea) {
-        const allButtons = printArea.querySelectorAll('button, a.btn, input[type="button"], #sec-jenis-kas-wrapper, .pt-2');
-        allButtons.forEach(el => el.remove());
-    }
-
-    // 5. Cetak
-    window.print();
-
-    // 6. Kembalikan ke konten asli
-    document.body.innerHTML = originalContent;
-    location.reload(); 
-}
-/// Fungsi untuk membuka modal dan menampilkan data DKM
-function bukaStrukturDKM() {
-    const modal = document.getElementById('modal-struktur-dkm');
-    const konten = document.getElementById('konten-struktur-dkm');
-    
-    modal.classList.remove('hidden');
-    konten.innerHTML = `<p class="text-center text-gray-500 py-4">Memuat data dari tab DKM...</p>`;
-    
-    // Gunakan URL Web App Anda yang aktif, pastikan diakhiri dengan ?action=dkm
-    const urlSpreadsheet = 'https://script.google.com/macros/s/AKfycbyMxnitBMWw96lMI8-EMwacoNRaC0RylNCr56tORwAhz5sQ960Ug6dUBl6FyldlCkw8Hg/exec?action=dkm'; 
-
-    fetch(urlSpreadsheet)
-        .then(response => response.json())
-        .then(data => {
-            if (!data || data.length === 0) {
-                konten.innerHTML = `<p class="text-center text-red-500 py-4">Data di tab DKM kosong atau gagal dimuat.</p>`;
-                return;
+            const printArea = document.getElementById('print-area');
+            if (printArea) {
+                const allButtons = printArea.querySelectorAll('button, a.btn, input[type="button"], #sec-jenis-kas-wrapper, .pt-2');
+                allButtons.forEach(el => el.remove());
             }
 
-            let html = '<table class="w-full border-collapse border border-gray-200 text-left text-xs">';
-            html += '<tr class="bg-emerald-100 text-emerald-900 font-bold"><th class="border border-gray-200 p-2">Jabatan</th><th class="border border-gray-200 p-2">Nama Pengurus</th></tr>';
-            
-            data.forEach(row => {
-                html += `<tr>
-                    <td class="border border-gray-200 p-2 font-semibold text-gray-700">${row.jabatan || '-'}</td>
-                    <td class="border border-gray-200 p-2 text-gray-800">${row.nama || '-'}</td>
-                </tr>`;
-            });
-            html += '</table>';
-            
-            konten.innerHTML = html;
-        })
-        .catch(error => {
-            konten.innerHTML = `<p class="text-center text-red-500 py-4">Gagal terhubung ke Spreadsheet.</p>`;
-            console.error('Error:', error);
-        });
-}
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload(); 
+        }
 
-function tutupStrukturDKM() {
-    const modal = document.getElementById('modal-struktur-dkm');
-    modal.classList.add('hidden');
-}
-function bukaRuteKeMasjid() {
-    // Langsung buka lokasi titik Masjid AT-TAQWA di Google Maps
-    const lokasiMasjid = "739R+9R9, Petani, Mandau, Bengkalis Regency, Riau 28983";
-    const urlLokasi = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(lokasiMasjid)}`;
-    window.open(urlLokasi, '_blank');
-}
+        function bukaStrukturDKM() {
+            const modal = document.getElementById('modal-struktur-dkm');
+            const konten = document.getElementById('konten-struktur-dkm');
+            
+            modal.classList.remove('hidden');
+            konten.innerHTML = `<p class="text-center text-gray-500 py-4">Memuat data dari tab DKM...</p>`;
+            
+            const urlSpreadsheet = 'https://script.google.com/macros/s/AKfycbyMxnitBMWw96lMI8-EMwacoNRaC0RylNCr56tORwAhz5sQ960Ug6dUBl6FyldlCkw8Hg/exec?action=dkm'; 
 
+            fetch(urlSpreadsheet)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data || data.length === 0) {
+                        konten.innerHTML = `<p class="text-center text-red-500 py-4">Data di tab DKM kosong atau gagal dimuat.</p>`;
+                        return;
+                    }
+
+                    let html = '<table class="w-full border-collapse border border-gray-200 text-left text-xs">';
+                    html += '<tr class="bg-emerald-100 text-emerald-950 font-bold"><th class="border border-gray-200 p-2">Jabatan</th><th class="border border-gray-200 p-2">Nama Pengurus</th></tr>';
+                    
+                    data.forEach(row => {
+                        html += `<tr>
+                            <td class="border border-gray-200 p-2 font-semibold text-gray-700">${row.jabatan || '-'}</td>
+                            <td class="border border-gray-200 p-2 text-gray-800">${row.nama || '-'}</td>
+                        </tr>`;
+                    });
+                    html += '</table>';
+                    
+                    konten.innerHTML = html;
+                })
+                .catch(error => {
+                    konten.innerHTML = `<p class="text-center text-red-500 py-4">Gagal terhubung ke Spreadsheet.</p>`;
+                    console.error('Error:', error);
+                });
+        }
+
+        function tutupStrukturDKM() {
+            const modal = document.getElementById('modal-struktur-dkm');
+            modal.classList.add('hidden');
+        }
+
+        function bukaRuteKeMasjid() {
+            const lokasiMasjid = "739R+9R9, Petani, Mandau, Bengkalis Regency, Riau 28983";
+            const urlLokasi = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(lokasiMasjid)}`;
+            window.open(urlLokasi, '_blank');
+        }
     </script>
 </body>
 </html>
