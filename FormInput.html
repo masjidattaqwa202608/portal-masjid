@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Input Keuangan - Masjid At-Taqwa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-emerald-950 font-sans m-0 p-0 min-h-screen flex flex-col">
+    <div class="bg-white w-full min-h-screen shadow-2xl flex flex-col justify-between">
+        
+        <div>
+            <!-- Header Aplikasi -->
+            <div class="bg-emerald-900 text-white p-4 text-center shadow-md">
+                <h1 class="font-extrabold text-sm uppercase tracking-wider text-amber-300">MASJID AT-TAQWA</h1>
+                <p class="text-xs text-emerald-200 mt-0.5">Form Input Keuangan (Ketua, Sekretaris, Bendahara)</p>
+            </div>
+
+            <!-- Form Transaksi -->
+            <form id="form-transaksi" onsubmit="kirimData(event)" class="p-4 sm:p-6 space-y-4 text-xs">
+                
+                <!-- Tanggal Transaksi -->
+                <div>
+                    <label class="block font-bold text-emerald-950 mb-1 text-xs sm:text-sm">📅 Tanggal Transaksi:</label>
+                    <input type="date" id="tanggal" class="w-full border border-gray-300 rounded-xl p-3.5 focus:ring-2 focus:ring-emerald-600 font-medium text-xs sm:text-sm bg-gray-50" required>
+                </div>
+
+                <!-- Jenis Kas -->
+                <div>
+                    <label class="block font-bold text-emerald-950 mb-1 text-xs sm:text-sm">📁 Pilih Jenis / Target Kas:</label>
+                    <select id="jenisKas" class="w-full border border-gray-300 rounded-xl p-3.5 focus:ring-2 focus:ring-emerald-600 font-semibold text-xs sm:text-sm bg-gray-50" required>
+                        <option value="Kas Masjid / Umum">Kas Masjid / Umum (Tabel Kiri)</option>
+                        <option value="Kas Nazir Masjid">Kas Nazir Masjid (Tabel Kanan)</option>
+                    </select>
+                </div>
+
+                <!-- Kategori Kas -->
+                <div id="wrapper-kategori">
+                    <label class="block font-bold text-emerald-950 mb-1 text-xs sm:text-sm">🏷️ Kategori Jenis Kas (Tabel Kiri):</label>
+                    <select id="kategoriKas" class="w-full border border-gray-300 rounded-xl p-3.5 focus:ring-2 focus:ring-emerald-600 font-semibold text-xs sm:text-sm bg-gray-50">
+                        <option value="Kas Masjid">Kas Masjid</option>
+                        <option value="Kas Anak Yatim">Kas Anak Yatim</option>
+                        <option value="Proposal">Proposal</option>
+                        <option value="Infak Jamaah / Masyarakat">Infak Jamaah / Masyarakat</option>
+                    </select>
+                </div>
+
+                <!-- Uraian -->
+                <div>
+                    <label class="block font-bold text-emerald-950 mb-1 text-xs sm:text-sm">✍️ Uraian / Keterangan Transaksi:</label>
+                    <textarea id="uraian" rows="2" placeholder="Contoh: Infak Jum'at / Beli Perlengkapan" class="w-full border border-gray-300 rounded-xl p-3.5 focus:ring-2 focus:ring-emerald-600 text-xs sm:text-sm bg-gray-50" required></textarea>
+                </div>
+
+                <!-- Dana Masuk & Keluar -->
+                <div class="grid grid-cols-1 gap-3.5 pt-1">
+                    
+                    <!-- Dana Masuk -->
+                    <div class="bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-100">
+                        <label class="block font-bold text-emerald-900 mb-1 text-xs sm:text-sm">📥 Dana Masuk (Rp):</label>
+                        <input type="number" id="danaMasuk" value="0" class="w-full border border-emerald-300 rounded-xl p-3.5 focus:ring-2 focus:ring-emerald-600 font-mono text-sm sm:text-base bg-white" required>
+                        <!-- Tombol Cepat Tambah Nominal -->
+                        <div class="grid grid-cols-4 gap-1.5 mt-2.5">
+                            <button type="button" onclick="tambahNominal('danaMasuk', 50000)" class="bg-emerald-700 hover:bg-emerald-800 text-white py-2 rounded-lg text-xs font-bold">+50rb</button>
+                            <button type="button" onclick="tambahNominal('danaMasuk', 100000)" class="bg-emerald-700 hover:bg-emerald-800 text-white py-2 rounded-lg text-xs font-bold">+100rb</button>
+                            <button type="button" onclick="tambahNominal('danaMasuk', 500000)" class="bg-emerald-700 hover:bg-emerald-800 text-white py-2 rounded-lg text-xs font-bold">+500rb</button>
+                            <button type="button" onclick="resetNominal('danaMasuk')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 rounded-lg text-xs font-bold">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Dana Keluar -->
+                    <div class="bg-rose-50/70 p-3.5 rounded-xl border border-rose-100">
+                        <label class="block font-bold text-rose-900 mb-1 text-xs sm:text-sm">📤 Dana Keluar (Rp):</label>
+                        <input type="number" id="danaKeluar" value="0" class="w-full border border-rose-300 rounded-xl p-3.5 focus:ring-2 focus:ring-rose-600 font-mono text-sm sm:text-base bg-white" required>
+                        <!-- Tombol Cepat Tambah Nominal -->
+                        <div class="grid grid-cols-4 gap-1.5 mt-2.5">
+                            <button type="button" onclick="tambahNominal('danaKeluar', 50000)" class="bg-rose-700 hover:bg-rose-800 text-white py-2 rounded-lg text-xs font-bold">+50rb</button>
+                            <button type="button" onclick="tambahNominal('danaKeluar', 100000)" class="bg-rose-700 hover:bg-rose-800 text-white py-2 rounded-lg text-xs font-bold">+100rb</button>
+                            <button type="button" onclick="tambahNominal('danaKeluar', 500000)" class="bg-rose-700 hover:bg-rose-800 text-white py-2 rounded-lg text-xs font-bold">+500rb</button>
+                            <button type="button" onclick="resetNominal('danaKeluar')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 rounded-lg text-xs font-bold">Reset</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Tombol Aksi (Simpan & Tutup) -->
+                <div class="pt-4 pb-6 space-y-2">
+                    <button type="submit" id="btn-submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-4 rounded-xl shadow-lg transition transform active:scale-95 text-xs sm:text-sm uppercase tracking-wide">
+                        Simpan & Sinkronkan ke Spreadsheet
+                    </button>
+                    <button type="button" onclick="tutupFormInput()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3.5 rounded-xl shadow transition transform active:scale-95 text-xs sm:text-sm uppercase tracking-wide">
+                        ✕ Tutup / Kembali
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Pop-up Kustom -->
+    <div id="customModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-5 text-center shadow-2xl border border-emerald-200 space-y-3">
+            <div class="w-12 h-12 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mx-auto text-xl font-bold">✓</div>
+            <h3 id="modalTitle" class="font-bold text-sm text-emerald-950 uppercase tracking-wide">Informasi</h3>
+            <p id="modalMessage" class="text-xs text-gray-600 leading-relaxed"></p>
+            <button onclick="tutupModal()" class="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-2.5 rounded-xl text-xs transition">
+                OK
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmxkxqZXErj9U1SjNqc3WyjvRpTBElKANRAxlwjFXc6tU1sqvsZ86qVhgkF00VS2DDhw/exec";
+
+        document.getElementById('tanggal').valueAsDate = new Date();
+
+        document.getElementById('jenisKas').addEventListener('change', function() {
+            const wrapper = document.getElementById('wrapper-kategori');
+            if (this.value === "Kas Nazir Masjid") {
+                wrapper.style.display = "none";
+            } else {
+                wrapper.style.display = "block";
+            }
+        });
+
+        function tambahNominal(idField, jumlah) {
+            const input = document.getElementById(idField);
+            let nilaiSekarang = parseInt(input.value) || 0;
+            input.value = nilaiSekarang + jumlah;
+        }
+
+        function resetNominal(idField) {
+            document.getElementById(idField).value = 0;
+        }
+
+        function tutupFormInput() {
+            // Kembali ke halaman beranda sebelumnya (indexNEW_2.html)
+            if (document.referrer) {
+                window.location.href = document.referrer;
+            } else {
+                history.back();
+            }
+        }
+
+        function tampilkanPesan(judul, pesan) {
+            document.getElementById('modalTitle').innerText = judul;
+            document.getElementById('modalMessage').innerText = pesan;
+            document.getElementById('customModal').classList.remove('hidden');
+            document.getElementById('customModal').classList.add('flex');
+        }
+
+        function tutupModal() {
+            document.getElementById('customModal').classList.remove('flex');
+            document.getElementById('customModal').classList.add('hidden');
+        }
+
+        function kirimData(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            btn.innerText = "Menyimpan data...";
+            btn.disabled = true;
+
+            const data = {
+                tanggal: document.getElementById('tanggal').value,
+                jenisKas: document.getElementById('jenisKas').value,
+                kategoriKas: document.getElementById('kategoriKas').value,
+                uraian: document.getElementById('uraian').value,
+                danaMasuk: document.getElementById('danaMasuk').value,
+                danaKeluar: document.getElementById('danaKeluar').value
+            };
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if(result.status === "success") {
+                    tampilkanPesan("Berhasil!", "Alhamdulillah! Data berhasil disimpan dan disinkronkan ke Spreadsheet.");
+                    document.getElementById('form-transaksi').reset();
+                    document.getElementById('tanggal').valueAsDate = new Date();
+                    document.getElementById('wrapper-kategori').style.display = "block";
+                } else {
+                    tampilkanPesan("Gagal", "Gagal menyimpan: " + result.message);
+                }
+                btn.innerText = "Simpan & Sinkronkan ke Spreadsheet";
+                btn.disabled = false;
+            })
+            .catch((error) => {
+                tampilkanPesan("Kesalahan Koneksi", "Terjadi kesalahan: " + error);
+                btn.innerText = "Simpan & Sinkronkan ke Spreadsheet";
+                btn.disabled = false;
+            });
+        }
+    </script>
+</body>
+</html>
